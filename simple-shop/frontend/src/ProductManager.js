@@ -6,6 +6,17 @@ import "./App.css";
 const BASE_URL = "https://simple-shop-backend.onrender.com";
 const API_URL = `${BASE_URL}/api/products`;
 
+/**
+ * 🛠️ 工具函數：處理圖片網址
+ * 1. 解決雙斜線 // 問題
+ * 2. 如果沒有路徑則回傳空字串
+ */
+const getFullImageUrl = (path) => {
+  if (!path || path === "無") return "";
+  const fullUrl = `${BASE_URL}/${path}`;
+  return fullUrl.replace(/([^:]\/)\/+/g, "$1");
+};
+
 const AlertFactory = ({ type, message }) => {
   const styles = {
     success: { backgroundColor: "#d4edda", color: "#155724", border: "1px solid #c3e6cb" },
@@ -26,14 +37,13 @@ function ProductManager() {
   const [alert, setAlert] = useState({ show: false, message: "", type: "success" });
   const [activeTab, setActiveTab] = useState("products");
   const [searchTerm, setSearchTerm] = useState("");
-  const [selectedIds, setSelectedIds] = useState([]); 
-  const [filterCategory, setFilterCategory] = useState("全部"); 
+  const [selectedIds, setSelectedIds] = useState([]);
+  const [filterCategory, setFilterCategory] = useState("全部");
   const [file, setFile] = useState(null);
-  const [preview, setPreview] = useState(""); 
+  const [preview, setPreview] = useState("");
 
-  // --- 1. 分頁狀態 ---
   const [currentPage, setCurrentPage] = useState(1);
-  const itemsPerPage = 5; // 每頁顯示 5 筆
+  const itemsPerPage = 5;
 
   const fetchProducts = async () => {
     try {
@@ -44,24 +54,20 @@ function ProductManager() {
 
   useEffect(() => { fetchProducts(); }, []);
 
-  //  過濾邏輯
   const filteredProducts = products.filter(p => {
     const matchesSearch = p.name.toLowerCase().includes(searchTerm.toLowerCase());
     const matchesCategory = filterCategory === "全部" || p.category === filterCategory;
     return matchesSearch && matchesCategory;
   });
 
-  // --- 2. 分頁計算 ---
   const totalPages = Math.ceil(filteredProducts.length / itemsPerPage);
   const currentItems = filteredProducts.slice(
     (currentPage - 1) * itemsPerPage,
     currentPage * itemsPerPage
   );
 
-  // 當搜尋或篩選變動時，自動回到第一頁
   useEffect(() => { setCurrentPage(1); }, [searchTerm, filterCategory]);
 
-  // --- 3. 匯出 CSV 功能 ---
   const exportToCSV = () => {
     const headers = ["商品名稱,價格,庫存,分類"];
     const rows = filteredProducts.map(p => 
@@ -104,7 +110,9 @@ function ProductManager() {
         stock: product.stock,
         category: product.category || "未分類" 
     });
-    setPreview(product.imageUrl ? `${BASE_URL}/${product.imageUrl}` : "");
+    // 編輯時處理預覽圖：有圖顯示圖，沒圖就清空預覽
+    const imgUrl = getFullImageUrl(product.imageUrl);
+    setPreview(imgUrl); 
   };
 
   const handleDelete = async (id) => {
@@ -128,56 +136,43 @@ function ProductManager() {
     }
   };
 
-const handleSubmit = async (e) => {
-  e.preventDefault();
-  
-  // 1. 確認 ID
-  console.log("提交動作 - editingId:", editingId);
-
-  const formData = new FormData();
-  formData.append("name", form.name);
-  formData.append("description", form.description);
-  formData.append("price", Number(form.price)); // 轉成數字
-  formData.append("stock", Number(form.stock)); // 轉成數字
-  formData.append("category", form.category);
-  
-  // 2. 確認檔案
-  if (file) {
-    console.log("正在上傳檔案:", file.name);
-    formData.append("image", file); // 必須跟後端 upload.single('image') 一致
-  }
-
-  const config = { 
-    headers: { 
-      Authorization: `Bearer ${localStorage.getItem("token")}`, 
-      "Content-Type": "multipart/form-data" 
-    } 
-  };
-
-  try {
-    if (editingId) {
-      // 3. 更新
-      const res = await axios.put(`${API_URL}/${editingId}`, formData, config);
-      console.log("更新成功:", res.data);
-      setEditingId(null);
-      setAlert({ show: true, message: "✅ 商品更新成功！", type: "success" });
-    } else {
-      // 4. 新增
-      const res = await axios.post(API_URL, formData, config);
-      console.log("新增成功:", res.data);
-      setAlert({ show: true, message: "✅ 商品新增成功！", type: "success" });
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    const formData = new FormData();
+    formData.append("name", form.name);
+    formData.append("description", form.description);
+    formData.append("price", Number(form.price));
+    formData.append("stock", Number(form.stock));
+    formData.append("category", form.category);
+    
+    if (file) {
+      formData.append("image", file);
     }
-    // ...重設表單邏輯
-    setForm({ name: "", description: "", price: "", stock: "", category: "未分類" });
-    setFile(null); 
-    setPreview(""); 
-    fetchProducts();
-  } catch (err) {
-    // 💡 這裡最重要！印出後端回傳的具體 400 錯誤原因
-    console.error("提交失敗詳情:", err.response?.data); 
-    setAlert({ show: true, message: `❌ 提交失敗: ${err.response?.data?.message || "格式錯誤"}`, type: "danger" });
-  }
-};
+
+    const config = { 
+      headers: { 
+        Authorization: `Bearer ${localStorage.getItem("token")}`, 
+        "Content-Type": "multipart/form-data" 
+      } 
+    };
+
+    try {
+      if (editingId) {
+        await axios.put(`${API_URL}/${editingId}`, formData, config);
+        setEditingId(null);
+        setAlert({ show: true, message: "✅ 商品更新成功！", type: "success" });
+      } else {
+        await axios.post(API_URL, formData, config);
+        setAlert({ show: true, message: "✅ 商品新增成功！", type: "success" });
+      }
+      setForm({ name: "", description: "", price: "", stock: "", category: "未分類" });
+      setFile(null); 
+      setPreview(""); 
+      fetchProducts();
+    } catch (err) {
+      setAlert({ show: true, message: `❌ 提交失敗: ${err.response?.data?.message || "格式錯誤"}`, type: "danger" });
+    }
+  };
 
   return (
     <div className={isDark ? "dark-theme container" : "light-theme container"}>
@@ -185,12 +180,11 @@ const handleSubmit = async (e) => {
         <h3 className="sidebar-logo">SELLER CENTER</h3>
         <button className={`sidebar-item ${activeTab === 'products' ? 'active' : ''}`} onClick={() => setActiveTab('products')}> 商品管理</button>
         <button className={`sidebar-item ${activeTab === 'data' ? 'active' : ''}`} onClick={() => setActiveTab('data')}> 數據中心</button>
-        {/* 🔹 新增：買家視角按鈕 */}
-      <button className={`sidebar-item ${activeTab === 'shop' ? 'active' : ''}`} 
-        onClick={() => setActiveTab('shop')} 
-        style={{ color: '#fbbf24', borderColor: '#fbbf24' }}>
-         買家視角 (前台)
-      </button>
+        <button className={`sidebar-item ${activeTab === 'shop' ? 'active' : ''}`} 
+          onClick={() => setActiveTab('shop')} 
+          style={{ color: '#fbbf24', borderColor: '#fbbf24' }}>
+           買家視角 (前台)
+        </button>
         <button className="theme-toggle-btn" onClick={() => setIsDark(!isDark)}>{isDark ? " 淺色" : " 深色"}</button>
       </div>
 
@@ -220,10 +214,12 @@ const handleSubmit = async (e) => {
               <div className="file-input-wrapper" style={{ gridColumn: "1 / -1", textAlign: "left", marginTop: "10px" }}>
                 <label style={{ fontSize: "14px", color: "var(--text-muted)" }}> 上傳商品圖片：</label>
                 <input type="file" accept="image/*" onChange={handleFileChange} />
-                {preview && (
+                {preview ? (
                   <div style={{ marginTop: "10px" }}>
                     <img src={preview} alt="預覽圖" style={{ width: "80px", height: "80px", borderRadius: "8px", objectFit: "cover", border: "1px solid var(--border-color)" }} />
                   </div>
+                ) : (
+                  <div style={{ marginTop: "10px", color: "var(--text-muted)", fontSize: "14px" }}>目前狀態：無圖片</div>
                 )}
               </div>
 
@@ -241,14 +237,10 @@ const handleSubmit = async (e) => {
                 <option value="服飾配件"> 服飾配件</option>
                 <option value="食品飲料"> 食品飲料</option>
               </select>
-
               {selectedIds.length > 0 && (
                 <button className="btn-batch-delete" onClick={handleBatchDelete} style={{ background: '#ef4444', color: 'white' }}>🗑️ 刪除 ({selectedIds.length})</button>
               )}
-              
-              <button onClick={exportToCSV} className="btn-edit" style={{ width: 'auto', padding: '0 15px', backgroundColor: '#10b981' }}>
-                 匯出 CSV
-              </button>
+              <button onClick={exportToCSV} className="btn-edit" style={{ width: 'auto', padding: '0 15px', backgroundColor: '#10b981' }}>匯出 CSV</button>
             </div>
 
             <div className="table-container" style={{ width: '100%', maxWidth: '900px' }}>
@@ -263,7 +255,14 @@ const handleSubmit = async (e) => {
                   {currentItems.map((product) => (
                     <tr key={product._id} className={selectedIds.includes(product._id) ? "selected-row" : ""}>
                       <td><input type="checkbox" checked={selectedIds.includes(product._id)} onChange={() => handleSelectOne(product._id)} /></td>
-                      <td>{product.imageUrl ? <img src={`${BASE_URL}/${product.imageUrl}`} className="product-img" alt={product.name} /> : "無"}</td>
+                      {/* 🌟 這裡實現你要求的「無」的存在 */}
+                      <td>
+                        {product.imageUrl && product.imageUrl !== "無" ? (
+                          <img src={getFullImageUrl(product.imageUrl)} className="product-img" alt={product.name} />
+                        ) : (
+                          <span style={{ color: "var(--text-muted)", fontSize: "14px" }}>無</span>
+                        )}
+                      </td>
                       <td>
                         <strong>{product.name}</strong>
                         <div className="category-tag">{product.category || "未分類"}</div>
@@ -284,138 +283,94 @@ const handleSubmit = async (e) => {
                 </tbody>
               </table>
 
-              {/* --- 4. 分頁按鈕 UI --- */}
               <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', gap: '20px', marginTop: '30px', paddingBottom: '20px' }}>
-                <button 
-                  disabled={currentPage === 1}
-                  onClick={() => setCurrentPage(p => p - 1)}
-                  style={{ padding: '8px 16px', borderRadius: '6px', cursor: currentPage === 1 ? 'not-allowed' : 'pointer', opacity: currentPage === 1 ? 0.5 : 1 }}
-                >
-                  上一頁
-                </button>
+                <button disabled={currentPage === 1} onClick={() => setCurrentPage(p => p - 1)} style={{ padding: '8px 16px', borderRadius: '6px', cursor: currentPage === 1 ? 'not-allowed' : 'pointer', opacity: currentPage === 1 ? 0.5 : 1 }}>上一頁</button>
                 <span style={{ color: 'var(--text-main)', fontWeight: '700' }}>頁次 {currentPage} / {totalPages || 1}</span>
-                <button 
-                  disabled={currentPage === totalPages || totalPages === 0}
-                  onClick={() => setCurrentPage(p => p + 1)}
-                  style={{ padding: '8px 16px', borderRadius: '6px', cursor: (currentPage === totalPages || totalPages === 0) ? 'not-allowed' : 'pointer', opacity: (currentPage === totalPages || totalPages === 0) ? 0.5 : 1 }}
-                >
-                  下一頁 
-                </button>
+                <button disabled={currentPage === totalPages || totalPages === 0} onClick={() => setCurrentPage(p => p + 1)} style={{ padding: '8px 16px', borderRadius: '6px', cursor: (currentPage === totalPages || totalPages === 0) ? 'not-allowed' : 'pointer', opacity: (currentPage === totalPages || totalPages === 0) ? 0.5 : 1 }}>下一頁</button>
               </div>
             </div>
           </>
         )}
 
         {activeTab === 'data' && (
-  <div className="data-center" style={{ width: '100%', maxWidth: '900px' }}>
-    <h2 style={{ marginBottom: '30px' }}> 營運數據</h2>
-    
-    <div className="stats-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: '20px' }}>
-      
-      {/*  亮點一：商品分類比例圖 */}
-      <div className="stat-card" style={{ gridColumn: '1 / -1', minHeight: '400px' }}>
-        <h4 style={{ color: 'var(--text-muted)', marginBottom: '20px' }}> 商品分類佔比分析</h4>
-        <ResponsiveContainer width="100%" height={300}>
-          <PieChart>
-            <Pie
-              data={Object.entries(
-                products.reduce((acc, p) => ({ ...acc, [p.category || "未分類"]: (acc[p.category || "未分類"] || 0) + 1 }), {})
-              ).map(([name, value]) => ({ name, value }))}
-              cx="50%"
-              cy="50%"
-              innerRadius={60}
-              outerRadius={90}
-              paddingAngle={5}
-              dataKey="value"
-            >
-              {/* 定義漂亮的圖表顏色 */}
-              {[ '#6366f1', '#10b981', '#f59e0b', '#ef4444', '#8b5cf6' ].map((color, index) => (
-                <Cell key={`cell-${index}`} fill={color} />
-              ))}
-            </Pie>
-            <Tooltip 
-              contentStyle={{ backgroundColor: '#1e293b', border: '1px solid #334155', borderRadius: '8px', color: '#fff' }}
-            />
-            <Legend />
-          </PieChart>
-        </ResponsiveContainer>
-      </div>
+          <div className="data-center" style={{ width: '100%', maxWidth: '900px' }}>
+            <h2 style={{ marginBottom: '30px' }}> 營運數據</h2>
+            <div className="stats-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: '20px' }}>
+              <div className="stat-card" style={{ gridColumn: '1 / -1', minHeight: '400px' }}>
+                <h4 style={{ color: 'var(--text-muted)', marginBottom: '20px' }}> 商品分類佔比分析</h4>
+                <ResponsiveContainer width="100%" height={300}>
+                  <PieChart>
+                    <Pie
+                      data={Object.entries(
+                        products.reduce((acc, p) => ({ ...acc, [p.category || "未分類"]: (acc[p.category || "未分類"] || 0) + 1 }), {})
+                      ).map(([name, value]) => ({ name, value }))}
+                      cx="50%" cy="50%" innerRadius={60} outerRadius={90} paddingAngle={5} dataKey="value"
+                    >
+                      {[ '#6366f1', '#10b981', '#f59e0b', '#ef4444', '#8b5cf6' ].map((color, index) => (
+                        <Cell key={`cell-${index}`} fill={color} />
+                      ))}
+                    </Pie>
+                    <Tooltip contentStyle={{ backgroundColor: '#1e293b', border: '1px solid #334155', borderRadius: '8px', color: '#fff' }} />
+                    <Legend />
+                  </PieChart>
+                </ResponsiveContainer>
+              </div>
+              <div className="stat-card" style={{ gridColumn: '1 / -1' }}>
+                <h4 style={{ color: '#ef4444', marginBottom: '15px', display: 'flex', alignItems: 'center', gap: '10px' }}>⚠️ 庫存低於安全水位 (5件以下)</h4>
+                <div style={{ overflowX: 'auto' }}>
+                  <table style={{ width: '100%', fontSize: '14px', textAlign: 'left' }}>
+                    <thead>
+                      <tr style={{ borderBottom: '1px solid var(--border-color)', color: 'var(--text-muted)' }}>
+                        <th style={{ padding: '12px' }}>商品名稱</th>
+                        <th style={{ padding: '12px' }}>剩餘庫存</th>
+                        <th style={{ padding: '12px' }}>所屬分類</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {products.filter(p => p.stock < 5).length > 0 ? (
+                        products.filter(p => p.stock < 5).map(p => (
+                          <tr key={p._id} style={{ borderBottom: '1px solid rgba(255,255,255,0.05)' }}>
+                            <td style={{ padding: '12px', color: 'var(--text-main)' }}>{p.name}</td>
+                            <td style={{ padding: '12px', color: '#ef4444', fontWeight: '800' }}>{p.stock}</td>
+                            <td style={{ padding: '12px', color: 'var(--text-muted)' }}>{p.category}</td>
+                          </tr>
+                        ))
+                      ) : (
+                        <tr>
+                          <td colSpan="3" style={{ padding: '30px', textAlign: 'center', color: '#10b981', fontWeight: '600' }}>太棒了！目前所有商品庫存皆在安全範圍。</td>
+                        </tr>
+                      )}
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </div>
+        )}
 
-      {/*  亮點二：庫存預警名單 */}
-      <div className="stat-card" style={{ gridColumn: '1 / -1' }}>
-        <h4 style={{ color: '#ef4444', marginBottom: '15px', display: 'flex', alignItems: 'center', gap: '10px' }}>
-          ⚠️ 庫存低於安全水位 (5件以下)
-        </h4>
-        <div style={{ overflowX: 'auto' }}>
-          <table style={{ width: '100%', fontSize: '14px', textAlign: 'left' }}>
-            <thead>
-              <tr style={{ borderBottom: '1px solid var(--border-color)', color: 'var(--text-muted)' }}>
-                <th style={{ padding: '12px' }}>商品名稱</th>
-                <th style={{ padding: '12px' }}>剩餘庫存</th>
-                <th style={{ padding: '12px' }}>所屬分類</th>
-              </tr>
-            </thead>
-            <tbody>
-              {products.filter(p => p.stock < 5).length > 0 ? (
-                products.filter(p => p.stock < 5).map(p => (
-                  <tr key={p._id} style={{ borderBottom: '1px solid rgba(255,255,255,0.05)' }}>
-                    <td style={{ padding: '12px', color: 'var(--text-main)' }}>{p.name}</td>
-                    <td style={{ padding: '12px', color: '#ef4444', fontWeight: '800' }}>{p.stock}</td>
-                    <td style={{ padding: '12px', color: 'var(--text-muted)' }}>{p.category}</td>
-                  </tr>
-                ))
-              ) : (
-                <tr>
-                  <td colSpan="3" style={{ padding: '30px', textAlign: 'center', color: '#10b981', fontWeight: '600' }}>
-                     太棒了！目前所有商品庫存皆在安全範圍。
-                  </td>
-                </tr>
-              )}
-            </tbody>
-          </table>
-        </div>
-      </div>
-
-    </div>
-  </div>
-)}
-{/* --- 區塊 3：買家視角 (修正位置) --- */}
         {activeTab === 'shop' && (
           <div className="shop-container" style={{ width: '100%', maxWidth: '1100px', paddingBottom: '50px' }}>
             <h2 style={{ marginBottom: '30px', textAlign: 'center' }}> 精選商品展示 (前台預覽)</h2>
             <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(260px, 1fr))', gap: '25px' }}>
               {products.map(p => (
                 <div key={p._id} className="stat-card" style={{ 
-                    position: 'relative', 
-                    padding: '0', 
-                    overflow: 'hidden',
-                    display: 'flex',
-                    flexDirection: 'column',
-                    transition: 'transform 0.3s ease',
-                    //  修正點：使用變數確保背景隨主題切換
-                    backgroundColor: 'var(--sidebar-bg)', 
-                    border: '1px solid var(--border-color)' 
+                    position: 'relative', padding: '0', overflow: 'hidden', display: 'flex', flexDirection: 'column', transition: 'transform 0.3s ease',
+                    backgroundColor: 'var(--sidebar-bg)', border: '1px solid var(--border-color)' 
                   }}>
-                  {/* 庫存為 0 時的遮罩 */}
                   {p.stock === 0 && (
-                    <div style={{ position: 'absolute', top: 0, left: 0, right: 0, bottom: 0, background: 'rgba(0,0,0,0.7)', color: '#fff', display: 'flex', justifyContent: 'center', alignItems: 'center', zIndex: 10, fontWeight: '800', fontSize: '24px', letterSpacing: '2px' }}>
-                      SOLD OUT
-                    </div>
+                    <div style={{ position: 'absolute', top: 0, left: 0, right: 0, bottom: 0, background: 'rgba(0,0,0,0.7)', color: '#fff', display: 'flex', justifyContent: 'center', alignItems: 'center', zIndex: 10, fontWeight: '800', fontSize: '24px', letterSpacing: '2px' }}>SOLD OUT</div>
                   )}
-                  {/* ...其餘圖片與文字資訊代碼... */}
-                  <div style={{ width: '100%', height: '220px', backgroundColor: '#f1f5f9' }}>
-                    <img src={p.imageUrl ? `${BASE_URL}/${p.imageUrl}` : "https://via.placeholder.com/260x220?text=No+Image"} alt={p.name} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                  {/* 🌟 買家視角：無圖片時顯示灰色背景+文字 */}
+                  <div style={{ width: '100%', height: '220px', backgroundColor: '#f1f5f9', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+                    {p.imageUrl && p.imageUrl !== "無" ? (
+                      <img src={getFullImageUrl(p.imageUrl)} alt={p.name} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                    ) : (
+                      <span style={{ color: "#64748b", fontWeight: "600" }}>無圖片</span>
+                    )}
                   </div>
                   <div style={{ padding: '20px', flexGrow: 1, display: 'flex', flexDirection: 'column' }}>
                     <span style={{ fontSize: '12px', color: '#6366f1', fontWeight: 'bold', textTransform: 'uppercase' }}>{p.category || "未分類"}</span>
-                    <h3 style={{ 
-                      margin: '8px 0', 
-                      fontSize: '18px', 
-                      //  修正點：確保文字在淺色模式變深，深色模式變淺
-                      color: 'var(--text-main)' 
-                    }}>
-                      {p.name}
-                    </h3>
+                    <h3 style={{ margin: '8px 0', fontSize: '18px', color: 'var(--text-main)' }}>{p.name}</h3>
                     <div style={{ marginTop: 'auto', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                       <span style={{ fontSize: '22px', fontWeight: '800', color: '#10b981' }}>${p.price}</span>
                       <button onClick={() => alert(`已將 ${p.name} 加入購物車！`)} disabled={p.stock === 0} style={{ padding: '10px 15px', borderRadius: '8px', border: 'none', backgroundColor: p.stock === 0 ? '#475569' : '#6366f1', color: 'white', fontWeight: '700', cursor: p.stock === 0 ? 'not-allowed' : 'pointer' }}>
