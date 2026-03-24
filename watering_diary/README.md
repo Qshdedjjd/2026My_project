@@ -33,10 +33,6 @@
 5.  **深色模式切換**：支援主題切換與 localStorage 記錄設定。  
 6.  **資料永久保存**：即使重新整理，植物紀錄仍會保留。  
 
----
 
-
-## 六、GitHub Pages 網址
-https://github.com/Qshdedjjd/114_tkuim_web/blob/main/114_web_midterm_project
 
 
