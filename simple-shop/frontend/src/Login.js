@@ -1,6 +1,8 @@
 import React, { useState } from "react";
 import axios from "axios";
 
+const BASE_URL = "https://simple-shop-backend.onrender.com";
+
 function Login({ setToken }) {
   const [user, setUser] = useState({ username: "", password: "" });
   // ✅ 統一使用 msg 狀態，包含文字內容與類型（成功或失敗）
@@ -9,7 +11,7 @@ function Login({ setToken }) {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const res = await axios.post("http://localhost:5000/api/auth/login", user);
+      const res = await axios.post(`${BASE_URL}/api/auth/login`, user);
       localStorage.setItem("token", res.data.token);
       setToken(res.data.token);
     } catch (err) {
@@ -20,7 +22,7 @@ function Login({ setToken }) {
 
   const handleRegister = async () => {
     try {
-      await axios.post("http://localhost:5000/api/auth/register", user);
+      await axios.post(`${BASE_URL}/api/auth/register`, user);
       // ✅ 使用正確的 setMsg
       setMsg({ text: "註冊成功！現在您可以登入了", type: "success" });
     } catch (err) {

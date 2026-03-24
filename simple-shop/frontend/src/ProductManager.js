@@ -3,7 +3,8 @@ import axios from "axios";
 import { PieChart, Pie, Cell, Tooltip, ResponsiveContainer, Legend } from 'recharts';
 import "./App.css";
 
-const API_URL = "http://localhost:5000/api/products";
+const BASE_URL = "https://simple-shop-backend.onrender.com";
+const API_URL = `${BASE_URL}/api/products`;
 
 const AlertFactory = ({ type, message }) => {
   const styles = {
@@ -103,7 +104,7 @@ function ProductManager() {
         stock: product.stock,
         category: product.category || "未分類" 
     });
-    setPreview(product.imageUrl ? `http://localhost:5000${product.imageUrl}` : "");
+    setPreview(product.imageUrl ? `${BASE_URL}/${product.imageUrl}` : "");
   };
 
   const handleDelete = async (id) => {
@@ -241,7 +242,7 @@ function ProductManager() {
                   {currentItems.map((product) => (
                     <tr key={product._id} className={selectedIds.includes(product._id) ? "selected-row" : ""}>
                       <td><input type="checkbox" checked={selectedIds.includes(product._id)} onChange={() => handleSelectOne(product._id)} /></td>
-                      <td>{product.imageUrl ? <img src={`http://localhost:5000${product.imageUrl}`} className="product-img" alt={product.name} /> : "無"}</td>
+                      <td>{product.imageUrl ? <img src={`${BASE_URL}/${product.imageUrl}`} className="product-img" alt={product.name} /> : "無"}</td>
                       <td>
                         <strong>{product.name}</strong>
                         <div className="category-tag">{product.category || "未分類"}</div>
@@ -382,7 +383,7 @@ function ProductManager() {
                   )}
                   {/* ...其餘圖片與文字資訊代碼... */}
                   <div style={{ width: '100%', height: '220px', backgroundColor: '#f1f5f9' }}>
-                    <img src={p.imageUrl ? `http://localhost:5000${p.imageUrl}` : "https://via.placeholder.com/260x220?text=No+Image"} alt={p.name} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                    <img src={p.imageUrl ? `${BASE_URL}/${p.imageUrl}` : "https://via.placeholder.com/260x220?text=No+Image"} alt={p.name} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
                   </div>
                   <div style={{ padding: '20px', flexGrow: 1, display: 'flex', flexDirection: 'column' }}>
                     <span style={{ fontSize: '12px', color: '#6366f1', fontWeight: 'bold', textTransform: 'uppercase' }}>{p.category || "未分類"}</span>
