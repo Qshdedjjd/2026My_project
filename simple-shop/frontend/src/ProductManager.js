@@ -128,35 +128,56 @@ function ProductManager() {
     }
   };
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    const formData = new FormData();
-    formData.append("name", form.name);
-    formData.append("description", form.description);
-    formData.append("price", form.price);
-    formData.append("stock", form.stock);
-    formData.append("category", form.category);
-    if (file) formData.append("image", file);
+const handleSubmit = async (e) => {
+  e.preventDefault();
+  
+  // 1. 確認 ID
+  console.log("提交動作 - editingId:", editingId);
 
-    const config = { headers: { Authorization: `Bearer ${localStorage.getItem("token")}`, "Content-Type": "multipart/form-data" } };
+  const formData = new FormData();
+  formData.append("name", form.name);
+  formData.append("description", form.description);
+  formData.append("price", Number(form.price)); // 轉成數字
+  formData.append("stock", Number(form.stock)); // 轉成數字
+  formData.append("category", form.category);
+  
+  // 2. 確認檔案
+  if (file) {
+    console.log("正在上傳檔案:", file.name);
+    formData.append("image", file); // 必須跟後端 upload.single('image') 一致
+  }
 
-    try {
-      if (editingId) {
-        await axios.put(`${API_URL}/${editingId}`, formData, config);
-        setEditingId(null);
-        setAlert({ show: true, message: " 商品更新成功！", type: "success" });
-      } else {
-        await axios.post(API_URL, formData, config);
-        setAlert({ show: true, message: " 商品新增成功！", type: "success" });
-      }
-      setForm({ name: "", description: "", price: "", stock: "", category: "未分類" });
-      setFile(null); 
-      setPreview(""); 
-      setSearchTerm("");
-      fetchProducts();
-      setTimeout(() => setAlert({ show: false, message: "", type: "success" }), 3000);
-    } catch (err) { setAlert({ show: true, message: "提交失敗", type: "danger" }); }
+  const config = { 
+    headers: { 
+      Authorization: `Bearer ${localStorage.getItem("token")}`, 
+      "Content-Type": "multipart/form-data" 
+    } 
   };
+
+  try {
+    if (editingId) {
+      // 3. 更新
+      const res = await axios.put(`${API_URL}/${editingId}`, formData, config);
+      console.log("更新成功:", res.data);
+      setEditingId(null);
+      setAlert({ show: true, message: "✅ 商品更新成功！", type: "success" });
+    } else {
+      // 4. 新增
+      const res = await axios.post(API_URL, formData, config);
+      console.log("新增成功:", res.data);
+      setAlert({ show: true, message: "✅ 商品新增成功！", type: "success" });
+    }
+    // ...重設表單邏輯
+    setForm({ name: "", description: "", price: "", stock: "", category: "未分類" });
+    setFile(null); 
+    setPreview(""); 
+    fetchProducts();
+  } catch (err) {
+    // 💡 這裡最重要！印出後端回傳的具體 400 錯誤原因
+    console.error("提交失敗詳情:", err.response?.data); 
+    setAlert({ show: true, message: `❌ 提交失敗: ${err.response?.data?.message || "格式錯誤"}`, type: "danger" });
+  }
+};
 
   return (
     <div className={isDark ? "dark-theme container" : "light-theme container"}>
