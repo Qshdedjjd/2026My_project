@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>會員註冊表單</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <main class="container">
+    <h1>會員註冊</h1>
+
+    <form id="signupForm" novalidate>
+      <!-- 姓名 -->
+      <label for="name">姓名</label>
+      <input type="text" id="name" name="name" required aria-describedby="nameError" />
+      <p class="error-msg" id="nameError"></p>
+
+      <!-- Email -->
+      <label for="email">Email</label>
+      <input type="email" id="email" name="email" required aria-describedby="emailError" />
+      <p class="error-msg" id="emailError"></p>
+
+      <!-- 手機 -->
+      <label for="phone">手機</label>
+      <input type="tel" id="phone" name="phone" required pattern="\d{10}" aria-describedby="phoneError" />
+      <p class="error-msg" id="phoneError"></p>
+
+      <!-- 密碼 -->
+      <label for="password">密碼</label>
+      <input type="password" id="password" name="password" required minlength="8" aria-describedby="passwordError" />
+      <div class="strength">
+        <div id="strengthBar" class="strength-bar"></div>
+        <span id="strengthText">密碼強度：</span>
+      </div>
+      <p class="error-msg" id="passwordError"></p>
+
+      <!-- 確認密碼 -->
+      <label for="confirmPassword">確認密碼</label>
+      <input type="password" id="confirmPassword" name="confirmPassword" required aria-describedby="confirmError" />
+      <p class="error-msg" id="confirmError"></p>
+      <p id="confirmPasswordError" class="error-msg"></p><!-- 這行要加 -->
+
+
+      <!-- 興趣標籤 -->
+      <fieldset id="interests">
+        <legend>興趣標籤（至少選一個）</legend>
+        <label><input type="checkbox" name="interest" value="music"> 音樂</label>
+        <label><input type="checkbox" name="interest" value="sport"> 運動</label>
+        <label><input type="checkbox" name="interest" value="travel"> 旅遊</label>
+        <label><input type="checkbox" name="interest" value="reading"> 閱讀</label>
+        <p class="error-msg" id="interestError"></p>
+      </fieldset>
+
+      <!-- 服務條款 -->
+      <label>
+        <input type="checkbox" id="terms" required aria-describedby="termsError" />
+        我已閱讀並同意服務條款
+      </label>
+      <p class="error-msg" id="termsError"></p>
+
+      <!-- 按鈕 -->
+      <button type="submit" id="submitBtn">送出</button>
+      <button type="reset" id="resetBtn" class="secondary">重設</button>
+
+      <p id="formMessage" class="success-msg"></p>
+    </form>
+  </main>
+
+  <script src="signup_form.js"></script>
+</body>
+</html>

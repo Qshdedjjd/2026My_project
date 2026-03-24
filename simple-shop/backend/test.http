@@ -1,0 +1,13 @@
+### 新增商品
+POST http://localhost:5000/api/products
+Content-Type: application/json
+
+{
+  "name": "iPhone 15",
+  "description": "Apple smartphone",
+  "price": 29900,
+  "stock": 10
+}
+
+### 取得商品列表
+GET http://localhost:5000/api/products

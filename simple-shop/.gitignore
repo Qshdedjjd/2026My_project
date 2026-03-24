@@ -1,0 +1,16 @@
+# Dependencies
+node_modules/
+
+# Environment
+.env
+
+# Uploads (避免上傳測試圖片)
+uploads/
+
+# Build
+build/
+dist/
+
+# OS files
+.DS_Store
+Thumbs.db

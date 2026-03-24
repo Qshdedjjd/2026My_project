@@ -1,0 +1,115 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: "Segoe UI", sans-serif;
+}
+
+body.space {
+    min-height: 100vh;
+    background: radial-gradient(circle at top, #1b1f3b, #05010f);
+    color: white;
+    overflow: hidden;
+}
+
+/* NAV */
+.nav {
+    display: flex;
+    justify-content: space-between;
+    padding: 24px 48px;
+}
+
+.logo {
+    letter-spacing: 3px;
+    font-weight: bold;
+}
+
+.nav-btn {
+    color: white;
+    text-decoration: none;
+    border: 1px solid rgba(255, 255, 255, .3);
+    padding: 8px 18px;
+    border-radius: 20px;
+    backdrop-filter: blur(10px);
+}
+
+/* HERO */
+.hero {
+    text-align: center;
+    margin-top: 20vh;
+}
+
+.hero h1 {
+    font-size: 64px;
+    letter-spacing: 4px;
+}
+
+.hero p {
+    margin: 16px 0 32px;
+    opacity: 0.8;
+}
+
+.cta {
+    text-decoration: none;
+    color: black;
+    background: white;
+    padding: 14px 32px;
+    border-radius: 30px;
+    font-weight: bold;
+}
+
+/* CARDS */
+.cards {
+    display: flex;
+    gap: 32px;
+    justify-content: center;
+    margin-top: 25vh;
+}
+
+.card {
+    width: 220px;
+    padding: 24px;
+    border-radius: 20px;
+    background: rgba(255, 255, 255, 0.08);
+    backdrop-filter: blur(14px);
+    box-shadow: 0 0 40px rgba(140, 120, 255, .2);
+}
+
+/* PLANET */
+.planet {
+    position: absolute;
+    bottom: -120px;
+    right: -120px;
+    width: 300px;
+    height: 300px;
+    border-radius: 50%;
+    background: radial-gradient(circle at 30% 30%, #8f7bff, #2b145f);
+    opacity: 0.6;
+}
+
+/* FLOATING ANIMATIONS */
+@keyframes float {
+    0% {
+        transform: translateY(0);
+    }
+
+    50% {
+        transform: translateY(-20px);
+    }
+
+    100% {
+        transform: translateY(0);
+    }
+}
+
+.float {
+    animation: float 6s ease-in-out infinite;
+}
+
+.float-delay {
+    animation: float 7s ease-in-out infinite;
+}
+
+.float-slow {
+    animation: float 10s ease-in-out infinite;
+}
