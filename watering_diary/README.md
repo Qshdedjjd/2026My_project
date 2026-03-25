@@ -12,7 +12,7 @@
 - 支援深色模式與 localStorage 永久保存資料  
 
 ## 展示頁面
-**預覽網頁**: [https://qshdedjjd.github.io/2026My_project/web_design/]
+**預覽網頁**: [https://qshdedjjd.github.io/2026My_project/watering_diary/]
 ---
 
 ## 使用技術
