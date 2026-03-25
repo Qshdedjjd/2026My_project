@@ -3,7 +3,7 @@
 
 這是一個基於 **MERN Stack** (MongoDB, Express, React, Node.js) 開發的響應式管理系統，旨在提供商家一個直覺的後台控管介面，並同步提供買家視角的商品展示功能。
 
-##  線上展示 (Live Demo)
+##  線上展示 
 - **前端預覽**: [https://simple-shop-fronted.onrender.com]
 - **後端 API**: [https://simple-shop-backend.onrender.com]
 

@@ -11,6 +11,8 @@
 - 可一鍵更新「澆水日期」、刪除個別或全部紀錄  
 - 支援深色模式與 localStorage 永久保存資料  
 
+## 展示頁面
+**預覽網頁**: [https://qshdedjjd.github.io/2026My_project/web_design/]
 ---
 
 ## 使用技術

@@ -3,6 +3,8 @@
 
 這是一個著重於 **使用者體驗 (UX)**、**互動設計** 與 **網頁無障礙 (Accessibility)** 的會員註冊表單專案。除了基本的資料蒐集，本專案深入實作了多維度的前端驗證邏輯。
 
+## 展示頁面
+**預覽網頁**: [https://qshdedjjd.github.io/2026My_project/from/]
 ---
 
 ##  核心技術亮點 (Technical Highlights)

@@ -3,6 +3,8 @@
 
 這是一個專注於 **CSS 微互動 (Micro-interactions)** 與 **空間美學** 的前端實驗專案。透過純 CSS 實作動態懸浮效果，模擬無重力狀態下的介面交互感受。
 
+## 展示頁面
+**預覽網頁**: [https://qshdedjjd.github.io/2026My_project/web_design/]
 ---
 
 ##  技術核心與亮點 (Technical Highlights)
