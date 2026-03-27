@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import axios from "axios";
+import "./Login.css"; //  引入你剛創的 CSS
 
 const BASE_URL = "https://simple-shop-backend.onrender.com";
 
@@ -31,7 +32,8 @@ function Login({ setToken }) {
   };
 
   return (
-    <div className="container" >
+    <div className="login-container">
+      <div className="login-card">
       <h2 style={{ textAlign: 'center' }}>商城管理登入</h2>
       
       {/* ✅ 根據 type 顯示不同顏色的訊息 */}
@@ -66,6 +68,7 @@ function Login({ setToken }) {
           第一次使用？點此註冊帳號
         </button>
       </form>
+    </div>
     </div>
   );
 }

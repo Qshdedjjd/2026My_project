@@ -1,0 +1,52 @@
+/* Login.css */
+
+/* 1. 讓整頁垂直水平置中 */
+.login-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh; /* 佔滿全螢幕高度 */
+  background-color: #0f172a; /* 跟你的深色模式底色一致 */
+}
+
+/* 2. 登入方框樣式 */
+.login-card {
+  background-color: #1e293b; /* 深色卡片背景 */
+  padding: 40px;
+  border-radius: 12px;
+  box-shadow: 0 10px 25px rgba(0,0,0,0.3);
+  width: 100%;
+  max-width: 400px; /* 🔹 關鍵：限制寬度，讓它在電腦版也是小方塊 */
+  box-sizing: border-box;
+}
+
+/* 3. 表單垂直排列 */
+.login-form {
+  display: flex;
+  flex-direction: column;
+  gap: 20px; /* 元件間距 */
+}
+
+/* 4. 輸入框與按鈕統一寬度 */
+.login-form input, 
+.login-form button {
+  width: 100%;
+  padding: 12px;
+  border-radius: 6px;
+  border: 1px solid #334155;
+  box-sizing: border-box;
+  font-size: 16px;
+}
+
+.login-form input {
+  background-color: #f1f5f9;
+  color: #0f172a;
+}
+
+.login-form button {
+  cursor: pointer;
+  font-weight: 600;
+  border: none;
+  transition: opacity 0.2s;
+}
