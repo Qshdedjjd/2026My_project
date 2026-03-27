@@ -31,7 +31,7 @@ function Login({ setToken }) {
   };
 
   return (
-    <div className="container" style={{ maxWidth: '400px', marginTop: '100px' }}>
+    <div className="container" >
       <h2 style={{ textAlign: 'center' }}>商城管理登入</h2>
       
       {/* ✅ 根據 type 顯示不同顏色的訊息 */}
@@ -41,15 +41,18 @@ function Login({ setToken }) {
         </p>
       )}
       
-      <form onSubmit={handleSubmit} className="product-form" style={{ gridTemplateColumns: '1fr' }}>
+      {/* 🔹 使用你寫好的 login-form class，並強制單欄 */}
+      <form onSubmit={handleSubmit} className="login-form">
         <input 
           placeholder="管理員帳號" 
+          value={user.username}
           onChange={e => setUser({...user, username: e.target.value})} 
           required 
         />
         <input 
           type="password" 
           placeholder="管理員密碼" 
+          value={user.password}
           onChange={e => setUser({...user, password: e.target.value})} 
           required 
         />
@@ -58,7 +61,7 @@ function Login({ setToken }) {
         <button 
           type="button" 
           onClick={handleRegister}
-          style={{ backgroundColor: '#2ecc71', marginTop: '10px' }}
+          
         >
           第一次使用？點此註冊帳號
         </button>
