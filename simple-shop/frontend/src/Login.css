@@ -21,8 +21,8 @@
   box-sizing: border-box;
 }
 /*控制標題文字 */
-.login-card h2 {
-  color: #f1f5f9;       /* 設定文字為淺灰色，讓它在深色背景顯現 */
+.login-card h2 {/*h2對應js的內容*/
+  color: #a9cdf1;       /* 設定文字為淺灰色，讓它在深色背景顯現 */
   font-size: 26px;      /* 設定字體大小 */
   font-weight: 700;     /* 設定字體粗細 */
   text-align: center;   /* 讓文字水平置中 */

@@ -278,112 +278,59 @@ td {
   border: 1px solid #d9d9d9 !important;
 }
 
-/* --- 6. 純手機版特定優化 --- */
+/* --- 6. 管理介面手機版強效修復 --- */
 @media (max-width: 768px) {
-  .container { flex-direction: column; }
-  .sidebar {
-    width: 100%;
-    min-width: 100%;
-    flex-direction: row;
-    padding: 10px;
-    height: auto;
+  /* 1. 容器改為上下排列 */
+  .container {
+    flex-direction: column;
   }
-  .sidebar-logo { display: none; }
-  .main-content { padding: 20px; }
-  .action-bar { flex-direction: column; align-items: stretch; }
-}
 
-/*  統一表單與篩選器的下拉選單樣式 */
-.category-select, .category-filter {
-  padding: 12px;
-  border-radius: 8px;
-  border: 1px solid var(--border-color);
-  background-color: var(--input-bg);
-  color: var(--text-main);
-  font-size: 14px;
-  cursor: pointer;
-  outline: none;
-  width: 100%; /* 表單內撐滿 */
-}
+  /* 2. 側邊欄改為頂部橫向導覽 */
+  .sidebar {
+    width: 100% !important;
+    min-width: 100% !important;
+    height: auto;
+    flex-direction: row; /* 讓按鈕排成一橫列 */
+    padding: 10px;
+    overflow-x: auto;    /* 如果按鈕太多可以左右滑動 */
+    border-right: none;
+    border-bottom: 1px solid var(--border-color);
+  }
 
-/* 針對搜尋列旁邊的篩選器縮小寬度 */
-.category-filter {
-  width: auto;
-  min-width: 140px;
-  height: 45px; /* 與搜尋框高度一致 */
-}
+  .sidebar-logo {
+    display: none; /* 手機版隱藏 Logo 節省空間 */
+  }
 
-/*  優化商品名稱下方的分類標籤 */
-.category-tag {
-  display: inline-block;
-  font-size: 11px;
-  background-color: rgba(99, 102, 241, 0.15); /* 淡淡的紫色底 */
-  color: #818cf8; /* 亮紫色文字 */
-  padding: 2px 8px;
-  border-radius: 4px;
-  margin-top: 4px;
-  font-weight: 600;
-}
+  .sidebar-item {
+    padding: 8px 12px;
+    font-size: 14px;
+    white-space: nowrap; /* 避免文字斷行 */
+  }
 
-/* 讓表格列更有空間感 */
-td {
-  padding: 20px 16px;
-}
+  /* 3. 主內容區縮小間距 */
+  .main-content {
+    padding: 20px 15px;
+    width: 100%;
+    box-sizing: border-box;
+  }
 
-.stat-card {
-  padding: 20px;
-  background: var(--sidebar-bg);
-  border-radius: 12px;
-  border: 1px solid var(--border-color);
-  transition: transform 0.2s;
-}
+  /* 4. 商品表單強制轉為單欄 (解決格子爆開) */
+  .product-form {
+    grid-template-columns: 1fr !important; /* 強制單欄排版 */
+    padding: 15px;
+  }
 
-.stat-card h4 {
-  color: var(--text-muted);
-  margin: 0 0 10px 0;
-}
+  /* 讓原本橫跨兩欄的元件恢復單欄 */
+  .file-input-wrapper, 
+  .product-form button[type="submit"] {
+    grid-column: span 1 !important; 
+  }
 
-/* 確保統計數據文字在深色模式下是白的 */
-.stat-card p {
-  color: var(--text-main);
-}
-
-.stat-card:hover {
-  transform: translateY(-8px);
-  box-shadow: 0 10px 20px rgba(0,0,0,0.2);
-  border-color: #6366f1;
-}
-/* 確保登入表單在寬網頁時，連標題一起垂直水平置中 */
-.login-page-container {
-  display: flex;
-  flex-direction: column;
-  align-items: center;    /* 水平置中 */
-  justify-content: center; /* 垂直置中 */
-  min-height: 80vh;       /* 佔據大部分視窗高度 */
-  width: 100%;
-}
-
-/* 登入表單的容器優化 */
-.login-form {
-  display: flex;
-  flex-direction: column;
-  gap: 15px;
-  width: 100%;
-  max-width: 400px; /* 🔹 這是你剛改好的關鍵，保留它 */
-  margin: 20px auto; 
-  background-color: var(--card-bg); /* 使用你定義的變數 */
-  padding: 30px;
-  border-radius: 12px;
-  border: 1px solid var(--border-color);
-  box-shadow: 0 10px 25px rgba(0,0,0,0.1); /* 加點陰影會更有質感 */
-}
-
-/* 確保按鈕不會變醜 */
-.login-form button {
-  cursor: pointer;
-  transition: opacity 0.2s;
-}
-
-.login-form button:hover {
-  opacity: 0.9;
+  /* 5. 表格強制開啟橫向捲軸，防止撐破網頁 */
+  .table-responsive {
+    display: block;
+    width: 100%;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+  }
 }
