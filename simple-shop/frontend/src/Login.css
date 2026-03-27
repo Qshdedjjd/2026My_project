@@ -20,6 +20,14 @@
   max-width: 400px; /* 🔹 關鍵：限制寬度，讓它在電腦版也是小方塊 */
   box-sizing: border-box;
 }
+/*控制標題文字 */
+.login-card h2 {
+  color: #f1f5f9;       /* 設定文字為淺灰色，讓它在深色背景顯現 */
+  font-size: 26px;      /* 設定字體大小 */
+  font-weight: 700;     /* 設定字體粗細 */
+  text-align: center;   /* 讓文字水平置中 */
+  margin-bottom: 30px;  /* 增加標題與下方輸入框的距離 */
+}
 
 /* 3. 表單垂直排列 */
 .login-form {
