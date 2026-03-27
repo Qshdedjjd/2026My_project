@@ -144,38 +144,32 @@ table {
 
 /* --- 5. 響應式斷點合併 (RWD) --- */
 
+/* --- 強效手機版修復 --- */
 @media (max-width: 768px) {
-  .container { flex-direction: column; }
-
-  /* 側邊欄變為頂部滾動選單 */
-  .sidebar {
-    width: 100%;
-    min-width: 100%;
-    height: auto;
-    flex-direction: row;
-    padding: 10px;
-    overflow-x: auto;
-    border-right: none;
-    border-bottom: 1px solid var(--border-color);
-    position: sticky;
-    top: 0;
+  /* 1. 解決容器溢出：強制所有東西不能超過螢幕寬度 */
+  .main-content, .product-form, .action-bar {
+    width: 100% !important;
+    max-width: 100% !important;
+    padding: 15px !important;
+    box-sizing: border-box; /* 確保 padding 不會撐開寬度 */
   }
 
-  .sidebar-logo { display: none; }
-  .sidebar-item { margin-right: 8px; padding: 10px 18px; }
-
-  .main-content { padding: 20px 15px; }
-
-  /* 表單變回單欄 */
-  .product-form { grid-template-columns: 1fr; }
-
-  .action-bar {
-    flex-direction: column;
-    align-items: stretch;
+  /* 2. 解決輸入框超出去：從兩欄改為一欄 */
+  .product-form {
+    display: flex !important;
+    flex-direction: column !important; /* 強制改為垂直排列 */
+    gap: 10px;
   }
-}
 
-@media (max-width: 480px) {
-  .btn-edit, .btn-delete { width: 100%; margin-bottom: 5px; }
-  .top-bar { justify-content: center; } /* 登出按鈕置中 */
+  /* 3. 解決按鈕與輸入框寬度 */
+  input, select, button, .product-form button[type="submit"] {
+    width: 100% !important; /* 讓按鈕和輸入框在手機上自動撐滿 100% */
+    margin: 5px 0;
+  }
+
+  /* 4. 解決多個登出按鈕的問題 */
+  /* 建議在手機版隱藏側邊欄的登出，只留頂部的，或者反之 */
+  .sidebar .btn-logout {
+    display: none; 
+  }
 }
