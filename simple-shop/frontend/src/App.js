@@ -19,12 +19,7 @@ function App() {
         <Login setToken={setToken} />
       ) : (
         <>
-          <button 
-            onClick={handleLogout} 
-            style={{ float: 'right', margin: '20px', padding: '10px', cursor: 'pointer' }}
-          >
-            登出
-          </button>
+          
           <ProductManager token={token} />
         </>
       )}

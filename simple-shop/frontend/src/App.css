@@ -63,13 +63,15 @@ html, body {
 /* --- 4. 元件樣式 (RWD 優化) --- */
 .product-form, .action-bar, .data-center, .table-responsive {
   width: 100%;
-  max-width: 1000px; /* 🔹 統一最大寬度，避免電腦版太散 */
+  max-width: 900px; /* 🔹 統一最大寬度 */
   margin-bottom: 30px;
+  box-sizing: border-box;
 }
 
 .product-form {
   display: grid;
-  grid-template-columns: repeat(2, 1fr); /* 🔹 使用 repeat 確保對齊 */
+  /* 🔹 整合：使用 minmax(0, 1fr) 確保格子寬度會被強制壓縮，不會撐大 */
+  grid-template-columns: repeat(2, minmax(0, 1fr)); 
   gap: 20px;
   background-color: var(--card-bg);
   border: 1px solid var(--border-color);
@@ -77,25 +79,21 @@ html, body {
   padding: 25px;
 }
 
+/* 🔹 確保所有輸入框不會超過它所在的格子 */
+.product-form input, 
+.product-form select {
+  width: 100% !important;
+  max-width: 100%;
+  padding: 10px;
+  border-radius: 6px;
+  border: 1px solid var(--border-color);
+  box-sizing: border-box; /* 🔹 防止 padding 撐開寬度 */
+}
+
 /* 讓按鈕與檔案上傳橫跨兩欄 */
 .file-input-wrapper, 
 .product-form button[type="submit"] {
   grid-column: span 2; 
-}
-
-/* 🔹 表格滾動容器 */
-.table-responsive {
-  overflow-x: auto;
-  background: var(--card-bg);
-  border-radius: 12px;
-  border: 1px solid var(--border-color);
-  -webkit-overflow-scrolling: touch;
-}
-
-table {
-  width: 100%;
-  border-collapse: collapse;
-  min-width: 700px; /* 🔹 讓表格在窄螢幕下觸發內部滾動，而非撐破網頁 */
 }
 
 /* --- 5. 強效 RWD 斷點 --- */
@@ -110,29 +108,18 @@ table {
     height: auto;
     flex-direction: row;
     padding: 10px;
-    overflow-x: auto; /* 🔹 導覽項目太多時可滑動 */
+    overflow-x: auto;
     border-right: none;
     border-bottom: 1px solid var(--border-color);
   }
 
-  .sidebar-logo { display: none; }
-
-  .main-content {
-    padding: 20px 15px;
-  }
-
+  /* 🔹 手機版強制單欄，解決輸入框溢出 */
   .product-form {
-    grid-template-columns: 1fr; /* 🔹 手機版強制單欄，解決輸入框溢出 */
+    grid-template-columns: 1fr;
   }
 
   .file-input-wrapper, 
   .product-form button[type="submit"] {
     grid-column: span 1; 
-  }
-
-  /* 🔹 確保所有輸入框不超過螢幕 */
-  input, select, button {
-    width: 100% !important;
-    font-size: 16px; /* 🔹 防止 iOS 輸入時自動放大 */
   }
 }
