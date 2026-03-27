@@ -280,57 +280,63 @@ td {
 
 /* --- 6. 管理介面手機版強效修復 --- */
 @media (max-width: 768px) {
-  /* 1. 容器改為上下排列 */
-  .container {
-    flex-direction: column;
-  }
-
-  /* 2. 側邊欄改為頂部橫向導覽 */
-  .sidebar {
-    width: 100% !important;
-    min-width: 100% !important;
-    height: auto;
-    flex-direction: row; /* 讓按鈕排成一橫列 */
-    padding: 10px;
-    overflow-x: auto;    /* 如果按鈕太多可以左右滑動 */
-    border-right: none;
-    border-bottom: 1px solid var(--border-color);
-  }
-
-  .sidebar-logo {
-    display: none; /* 手機版隱藏 Logo 節省空間 */
-  }
-
-  .sidebar-item {
-    padding: 8px 12px;
-    font-size: 14px;
-    white-space: nowrap; /* 避免文字斷行 */
-  }
-
-  /* 3. 主內容區縮小間距 */
+  /* 1. 修正整體容器，防止左右滑動 */
   .main-content {
-    padding: 20px 15px;
-    width: 100%;
-    box-sizing: border-box;
+    padding: 15px !important; /* 🔹 縮小間距，讓內容有更多空間 */
+    width: 100vw;
+    overflow-x: hidden; /* 🔹 鎖死水平溢出 */
   }
 
-  /* 4. 商品表單強制轉為單欄 (解決格子爆開) */
+  /* 2. 商品表單：強制從兩欄變成單欄 */
   .product-form {
-    grid-template-columns: 1fr !important; /* 強制單欄排版 */
+    grid-template-columns: 1fr !important; /* 🔹 關鍵！讓名稱、價格等垂直排列 */
     padding: 15px;
+    gap: 10px;
   }
 
-  /* 讓原本橫跨兩欄的元件恢復單欄 */
-  .file-input-wrapper, 
-  .product-form button[type="submit"] {
-    grid-column: span 1 !important; 
+  /* 3. 搜尋列與篩選器：同樣改為垂直排列 */
+  .action-bar {
+    flex-direction: column; 
+    align-items: stretch;
+    gap: 10px;
+  }
+  
+  .category-filter {
+    width: 100% !important; /* 🔹 讓下拉選單在手機佔滿全寬 */
   }
 
-  /* 5. 表格強制開啟橫向捲軸，防止撐破網頁 */
-  .table-responsive {
-    display: block;
-    width: 100%;
-    overflow-x: auto;
-    -webkit-overflow-scrolling: touch;
+  /* 4. 商品列表：改成「卡片式」佈局（因為手機表格太擠了） */
+  /* 如果你希望手機上也能看清楚商品，這段非常有幫助 */
+  table, thead, tbody, th, td, tr { 
+    display: block; 
+  }
+  
+  thead tr { 
+    position: absolute;
+    top: -9999px;
+    left: -9999px;
+  }
+  
+  tr { 
+    border: 1px solid var(--border-color);
+    margin-bottom: 15px;
+    border-radius: 8px;
+    padding: 10px;
+    background-color: var(--card-bg);
+  }
+  
+  td { 
+    border: none;
+    position: relative;
+    padding-left: 50%; 
+    text-align: right;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  
+  td:before { 
+    content: attr(data-label); /* 你需要在標籤加入 data-label */
+    font-weight: bold;
   }
 }
