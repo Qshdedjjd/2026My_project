@@ -1,4 +1,9 @@
 /* --- 1. 核心變數與全域設定 --- */
+
+input, select, textarea, button, img {
+  max-width: 100%; /* 確保任何元件都不會比父層寬 */
+}
+
 :root {
   --bg-color: #f8fafc;
   --sidebar-bg: #0f172a;
@@ -39,6 +44,8 @@ body {
   flex-direction: column;
   align-items: center;
   transition: padding 0.3s ease;
+  min-width: 0; /* 關鍵：防止 flex 項目被內容撐開 */
+  
 }
 
 /* 頂部功能列 */
@@ -156,9 +163,8 @@ table {
 
   /* 2. 解決輸入框超出去：從兩欄改為一欄 */
   .product-form {
-    display: flex !important;
-    flex-direction: column !important; /* 強制改為垂直排列 */
-    gap: 10px;
+    width: 100%;
+    box-sizing: border-box;
   }
 
   /* 3. 解決按鈕與輸入框寬度 */

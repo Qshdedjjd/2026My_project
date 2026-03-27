@@ -293,7 +293,7 @@ function ProductManager() {
         )}
 
         {activeTab === 'data' && (
-          <div className="data-center" style={{ width: '100%', maxWidth: '900px' }}>
+          <div className="data-center" >
             <h2 style={{ marginBottom: '30px' }}> 營運數據</h2>
             <div className="stats-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: '20px' }}>
               <div className="stat-card" style={{ gridColumn: '1 / -1', minHeight: '400px' }}>
