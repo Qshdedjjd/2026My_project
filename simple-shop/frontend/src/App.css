@@ -236,7 +236,8 @@ td {
 /* 確保頂部標題列寬度正確 */
 .main-content > div:first-child {
   width: 100%;
-  max-width: 900px;
+  max-width: 1100px; /* 稍微放大一點，或設為 100% 讓它自動延伸 */
+  box-sizing: border-box;
 }
 
 /* ✅ 庫存與標籤樣式 (移出媒體查詢) */
