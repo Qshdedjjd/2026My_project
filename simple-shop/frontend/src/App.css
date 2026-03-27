@@ -1,355 +1,181 @@
-/* --- 1. 核心顏色變數 --- */
-/* 淺色模式 */
-.light-theme {
+/* --- 1. 核心變數與全域設定 --- */
+:root {
   --bg-color: #f8fafc;
   --sidebar-bg: #0f172a;
-  --text-main: #81a6e7; /* 深色字 */
+  --text-main: #81a6e7;
   --text-muted: #64748b;
   --border-color: #e2e8f0;
+  --card-bg: #ffffff;
 }
 
-/* 深色模式 */
 .dark-theme {
   --bg-color: #0f172a;
   --sidebar-bg: #1e293b;
-  --text-main: #f1f5f9; /* 淺色字 */
+  --text-main: #f1f5f9;
   --text-muted: #94a3b8;
   --border-color: #334155;
+  --card-bg: #1e293b;
 }
 
-/* --- 2. 基礎佈局 --- */
-html, body {
+* { box-sizing: border-box; }
+
+body {
   margin: 0;
-  padding: 0;
-  /* 🔹 關鍵：確保 body 背景與深色模式底色一致，防止溢出顯示白色 */
-  background-color: #0f172a; 
+  background-color: var(--bg-color); 
   font-family: 'Inter', sans-serif;
-  -webkit-font-smoothing: antialiased;
-  min-height: 100vh;
+  overflow-x: hidden;
 }
 
+/* --- 2. 佈局架構 --- */
 .container {
-  min-height: 100vh;
   display: flex;
-  background-color: var(--bg-color);
-  margin: 0;
-  padding: 0;
-  /* 🔹 確保容器在內容不足時也能撐開 100% 高度 */
-  align-items: stretch; 
+  min-height: 100vh;
 }
 
 .main-content {
   flex: 1;
-  background-color: var(--bg-color);
-  min-height: 100vh;
   padding: 40px;
-  display: flex;         /* 保持您的 flex 設定 */
+  display: flex;
   flex-direction: column;
-  align-items: center;   /* 讓內容水平置中 */
-  box-sizing: border-box;
+  align-items: center;
+  transition: padding 0.3s ease;
 }
 
-/* --- 3. 側邊欄 (鎖定寬度解決字被吃掉) --- */
+/* 頂部功能列 */
+.top-bar {
+  display: flex;
+  justify-content: flex-end;
+  width: 100%;
+  max-width: 900px;
+  margin-bottom: 20px;
+}
+
+/* --- 3. 側邊欄 --- */
 .sidebar {
   width: 240px;
-  min-width: 240px;               /* 鎖定寬度防止文字被壓縮 */
+  min-width: 240px;
   background-color: var(--sidebar-bg);
   padding: 30px 20px;
   display: flex;
   flex-direction: column;
   border-right: 1px solid var(--border-color);
-  box-sizing: border-box;
+  z-index: 100;
 }
 
 .sidebar-logo {
-  color: #6366f1;
+  color: #fff;
+  font-size: 20px;
   font-weight: 800;
   margin-bottom: 30px;
-  font-size: 20px;
+  letter-spacing: 1px;
 }
 
 .sidebar-item {
   background: transparent;
   border: none;
-  color: #94a3b8;                /* 側邊欄文字預設灰 */
+  color: #94a3b8;
   padding: 12px 15px;
   text-align: left;
   font-size: 16px;
   cursor: pointer;
-  display: flex;
-  align-items: center;
-  gap: 12px;
   border-radius: 8px;
-  margin-bottom: 5px;
-  white-space: nowrap;           /*  強制文字不換行 */
+  margin-bottom: 8px;
+  transition: all 0.2s;
+  white-space: nowrap;
 }
 
+.sidebar-item:hover { background: rgba(255,255,255,0.05); }
 .sidebar-item.active {
   background-color: rgba(99, 102, 241, 0.2);
   color: #818cf8;
-  font-weight: 700;
+  font-weight: 600;
 }
 
-.theme-toggle-btn {
-  margin-top: auto;
-  background: rgba(255, 255, 255, 0.1);
-  border: 1px solid var(--border-color);
-  color: #ffffff;                /* 按鈕文字一律白色 */
-  padding: 12px;
-  border-radius: 50px;
-  cursor: pointer;
-  transition: 0.2s;
-}
-
-/* --- 4. 主內容區與表格 --- */
-/*  確保主內容區的所有標題在深色模式下變成純白 */
-.main-content h2 {
-  color: var(--text-main) !important; 
-  font-size: 26px;
-  font-weight: 800;
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  margin: 0; /* 配合 flex 佈局 */
-}
-
-/* 如果數據中心也有用到 h2 */
-.data-center h2 {
-  color: var(--text-main);
-}
-
-/* 修改原本的 .product-form 區塊 */
+/* --- 4. 元件樣式 --- */
 .product-form {
   display: grid;
-  grid-template-columns: 1fr 1fr; /* 強制分為兩欄 */
+  grid-template-columns: 1fr 1fr;
   gap: 15px;
   width: 100%;
   max-width: 900px;
-  background-color: var(--card-bg) !important;
+  background-color: var(--card-bg);
   border: 1px solid var(--border-color);
   border-radius: 12px;
   padding: 25px;
   margin-bottom: 30px;
-  box-sizing: border-box;
 }
 
-/* 讓圖片上傳與提交按鈕橫跨整排 */
-.file-input-wrapper, 
-.product-form button[type="submit"] {
+.file-input-wrapper, .product-form button[type="submit"] {
   grid-column: 1 / -1; 
+}
+
+/* 表格響應式 */
+.table-responsive {
+  width: 100%;
+  max-width: 900px;
+  overflow-x: auto;
+  background: var(--card-bg);
+  border-radius: 12px;
+  border: 1px solid var(--border-color);
 }
 
 table {
   width: 100%;
   border-collapse: collapse;
+  min-width: 700px; /* 稍微增加，確保在平板上內容不過擠 */
 }
 
-th {
-  background-color: var(--table-header);
-  color: var(--text-muted);      /* 表頭用灰色輔助 */
-  padding: 16px;
-  text-align: left;
-  font-size: 13px;
-  text-transform: uppercase;
-}
-
-td {
-  padding: 16px;
-  border-bottom: 1px solid var(--border-color);
-  color: var(--text-main) !important; /*  強制確保內容字體顏色正確 */
-  font-weight: 500;
-}
-
-.product-img {
-  width: 50px;
-  height: 50px;
-  object-fit: cover;
-  border-radius: 8px;
-  border: 1px solid var(--border-color);
-}
-
-/* --- 5. 搜尋列與操作區 (電腦與手機通用) --- */
+/* 操作區與分頁 */
 .action-bar {
   display: flex;
-  align-items: center; /* 垂直置中 */
   gap: 12px;
   width: 100%;
   max-width: 900px;
   margin-bottom: 20px;
 }
 
-.search-input {
-  flex: 1; /* 自動佔滿剩餘空間 */
-  height: 45px;
-}
-
-.category-filter {
-  width: 160px; /* 給予分類篩選器固定寬度 */
-  height: 45px;
-  flex-shrink: 0;
-}
-
-/*  強化按鈕顏色：確保電腦版也能看到實心顏色 */
-/* 修改編輯與刪除按鈕 */
-.btn-edit, .btn-delete {
-  width: 70px;            /*  設定固定寬度，確保按鈕整齊 */
-  height: 36px;           /*  設定固定高度 */
+.pagination-wrapper {
   display: flex;
-  align-items: center;
   justify-content: center;
-  border: none;
-  border-radius: 6px;
-  font-weight: 600;
-  cursor: pointer;
-  margin-bottom: 5px;     /* 按鈕之間的垂直間距 */
-  transition: all 0.2s;
+  align-items: center;
+  gap: 15px;
+  margin: 30px 0;
 }
 
-.btn-edit {
-  background-color: #30506d !important;
-  color: white !important;
-}
+/* --- 5. 響應式斷點合併 (RWD) --- */
 
-.btn-delete {
-  background-color: #928484 !important;
-  color: white !important;
-}
-
-/* 登出按鈕樣式 */
-.btn-logout {
-  background-color: #f1f5f9;
-  color: #0f172a;
-  border: 1px solid var(--border-color);
-  padding: 8px 16px;
-  border-radius: 6px;
-  font-weight: 600;
-  cursor: pointer;
-  transition: all 0.2s;
-}
-
-.btn-logout:hover {
-  background-color: #ef4444;
-  color: white;
-  border-color: #ef4444;
-}
-
-/* 確保頂部標題列寬度正確 */
-.main-content > div:first-child {
-  width: 100%;
-  max-width: 1100px; /* 稍微放大一點，或設為 100% 讓它自動延伸 */
-  box-sizing: border-box;
-}
-
-/* ✅ 庫存與標籤樣式 (移出媒體查詢) */
-.stock-number.danger {
-  color: #cf1322 !important;
-  font-weight: 800;
-}
-
-/* ✅ 強化後的狀態標籤樣式 */
-.badge {
-  font-size: 12px;
-  padding: 4px 10px;
-  border-radius: 4px;
-  font-weight: 800;        /*  字體加到最粗 */
-  display: inline-block;
-  text-align: center;
-  min-width: 60px;
-}
-
-/* 充足：深綠字 + 淺綠底 + 綠邊框 */
-.badge-instock {
-  background-color: #f6ffed !important;
-  color: #237804 !important;    /*  使用更深的森林綠 */
-  border: 1px solid #b7eb8f !important;
-}
-
-/* 需補貨：深紅字 + 淺紅底 + 紅邊框 */
-.badge-low {
-  background-color: #fff1f0 !important;
-  color: #a8071a !important;    /*  使用更深的血紅色 */
-  border: 1px solid #ffccc7 !important;
-}
-
-/* 已售罄：深灰字 + 灰底 + 灰邊框 */
-.badge-soldout {
-  background-color: #f5f5f5 !important;
-  color: #595959 !important;
-  border: 1px solid #d9d9d9 !important;
-}
-
-/* --- 6. 純手機版特定優化 --- */
 @media (max-width: 768px) {
   .container { flex-direction: column; }
+
+  /* 側邊欄變為頂部滾動選單 */
   .sidebar {
     width: 100%;
     min-width: 100%;
+    height: auto;
     flex-direction: row;
     padding: 10px;
-    height: auto;
+    overflow-x: auto;
+    border-right: none;
+    border-bottom: 1px solid var(--border-color);
+    position: sticky;
+    top: 0;
   }
+
   .sidebar-logo { display: none; }
-  .main-content { padding: 20px; }
-  .action-bar { flex-direction: column; align-items: stretch; }
+  .sidebar-item { margin-right: 8px; padding: 10px 18px; }
+
+  .main-content { padding: 20px 15px; }
+
+  /* 表單變回單欄 */
+  .product-form { grid-template-columns: 1fr; }
+
+  .action-bar {
+    flex-direction: column;
+    align-items: stretch;
+  }
 }
 
-/*  統一表單與篩選器的下拉選單樣式 */
-.category-select, .category-filter {
-  padding: 12px;
-  border-radius: 8px;
-  border: 1px solid var(--border-color);
-  background-color: var(--input-bg);
-  color: var(--text-main);
-  font-size: 14px;
-  cursor: pointer;
-  outline: none;
-  width: 100%; /* 表單內撐滿 */
-}
-
-/* 針對搜尋列旁邊的篩選器縮小寬度 */
-.category-filter {
-  width: auto;
-  min-width: 140px;
-  height: 45px; /* 與搜尋框高度一致 */
-}
-
-/*  優化商品名稱下方的分類標籤 */
-.category-tag {
-  display: inline-block;
-  font-size: 11px;
-  background-color: rgba(99, 102, 241, 0.15); /* 淡淡的紫色底 */
-  color: #818cf8; /* 亮紫色文字 */
-  padding: 2px 8px;
-  border-radius: 4px;
-  margin-top: 4px;
-  font-weight: 600;
-}
-
-/* 讓表格列更有空間感 */
-td {
-  padding: 20px 16px;
-}
-
-.stat-card {
-  padding: 20px;
-  background: var(--sidebar-bg);
-  border-radius: 12px;
-  border: 1px solid var(--border-color);
-  transition: transform 0.2s;
-}
-
-.stat-card h4 {
-  color: var(--text-muted);
-  margin: 0 0 10px 0;
-}
-
-/* 確保統計數據文字在深色模式下是白的 */
-.stat-card p {
-  color: var(--text-main);
-}
-
-.stat-card:hover {
-  transform: translateY(-8px);
-  box-shadow: 0 10px 20px rgba(0,0,0,0.2);
-  border-color: #6366f1;
+@media (max-width: 480px) {
+  .btn-edit, .btn-delete { width: 100%; margin-bottom: 5px; }
+  .top-bar { justify-content: center; } /* 登出按鈕置中 */
 }

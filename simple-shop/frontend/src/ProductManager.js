@@ -182,14 +182,14 @@ function ProductManager() {
         <button className={`sidebar-item ${activeTab === 'data' ? 'active' : ''}`} onClick={() => setActiveTab('data')}> 數據中心</button>
         <button className={`sidebar-item ${activeTab === 'shop' ? 'active' : ''}`} 
           onClick={() => setActiveTab('shop')} 
-          style={{ color: '#fbbf24', borderColor: '#fbbf24' }}>
+          style={{ color: '#fbbf24' }}>
            買家視角 (前台)
         </button>
         <button className="theme-toggle-btn" onClick={() => setIsDark(!isDark)}>{isDark ? " 淺色" : " 深色"}</button>
       </div>
 
       <div className="main-content">
-        <div style={{ display: 'flex', justifyContent: 'flex-end', width: '100%', maxWidth: '900px' }}>
+        <div className="top-bar">
           <button className="btn-logout" onClick={() => { localStorage.removeItem("token"); window.location.reload(); }}>登出</button>
         </div>
 
@@ -243,7 +243,7 @@ function ProductManager() {
               <button onClick={exportToCSV} className="btn-edit" style={{ width: 'auto', padding: '0 15px', backgroundColor: '#10b981' }}>匯出 CSV</button>
             </div>
 
-            <div className="table-container" style={{ width: '100%', maxWidth: '900px' }}>
+            <div className="table-responsive">
               <table>
                 <thead>
                   <tr>
@@ -283,10 +283,10 @@ function ProductManager() {
                 </tbody>
               </table>
 
-              <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', gap: '20px', marginTop: '30px', paddingBottom: '20px' }}>
-                <button disabled={currentPage === 1} onClick={() => setCurrentPage(p => p - 1)} style={{ padding: '8px 16px', borderRadius: '6px', cursor: currentPage === 1 ? 'not-allowed' : 'pointer', opacity: currentPage === 1 ? 0.5 : 1 }}>上一頁</button>
-                <span style={{ color: 'var(--text-main)', fontWeight: '700' }}>頁次 {currentPage} / {totalPages || 1}</span>
-                <button disabled={currentPage === totalPages || totalPages === 0} onClick={() => setCurrentPage(p => p + 1)} style={{ padding: '8px 16px', borderRadius: '6px', cursor: (currentPage === totalPages || totalPages === 0) ? 'not-allowed' : 'pointer', opacity: (currentPage === totalPages || totalPages === 0) ? 0.5 : 1 }}>下一頁</button>
+              <div className="pagination-wrapper">
+                <button disabled={currentPage === 1} onClick={() => setCurrentPage(p => p - 1)} className="btn-page">上一頁</button>
+                <span className="page-info">頁次 {currentPage} / {totalPages || 1}</span>
+                <button disabled={currentPage === totalPages || totalPages === 0} onClick={() => setCurrentPage(p => p + 1)} className="btn-page">下一頁</button>
               </div>
             </div>
           </>
