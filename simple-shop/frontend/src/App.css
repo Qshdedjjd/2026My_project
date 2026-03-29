@@ -17,6 +17,98 @@
   --card-bg: #1e293b;
 }
 
+
+/*  強化按鈕顏色：確保電腦版也能看到實心顏色 */
+/* 修改編輯與刪除按鈕 */
+.btn-edit, .btn-delete {
+  width: 70px;            /*  設定固定寬度，確保按鈕整齊 */
+  height: 36px;           /*  設定固定高度 */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: none;
+  border-radius: 6px;
+  font-weight: 600;
+  cursor: pointer;
+  margin-bottom: 5px;     /* 按鈕之間的垂直間距 */
+  transition: all 0.2s;
+}
+
+.btn-edit {
+  background-color: #30506d !important;
+  color: white !important;
+}
+
+.btn-delete {
+  background-color: #928484 !important;
+  color: white !important;
+}
+
+/* 登出按鈕樣式 */
+.btn-logout {
+  background-color: #f1f5f9;
+  color: #0f172a;
+  border: 1px solid var(--border-color);
+  padding: 8px 16px;
+  border-radius: 6px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.btn-logout:hover {
+  background-color: #ef4444;
+  color: white;
+  border-color: #ef4444;
+}
+
+/* 確保頂部標題列寬度正確 */
+.main-content > div:first-child {
+  width: 100%;
+  max-width: 1100px; /* 稍微放大一點，或設為 100% 讓它自動延伸 */
+  box-sizing: border-box;
+}
+
+/* ✅ 庫存與標籤樣式 (移出媒體查詢) */
+.stock-number.danger {
+  color: #cf1322 !important;
+  font-weight: 800;
+}
+
+/* ✅ 強化後的狀態標籤樣式 */
+.badge {
+  font-size: 12px;
+  padding: 4px 10px;
+  border-radius: 4px;
+  font-weight: 800;        /*  字體加到最粗 */
+  display: inline-block;
+  text-align: center;
+  min-width: 60px;
+}
+
+/* 充足：深綠字 + 淺綠底 + 綠邊框 */
+.badge-instock {
+  background-color: #f6ffed !important;
+  color: #237804 !important;    /*  使用更深的森林綠 */
+  border: 1px solid #b7eb8f !important;
+}
+
+/* 需補貨：深紅字 + 淺紅底 + 紅邊框 */
+.badge-low {
+  background-color: #fff1f0 !important;
+  color: #a8071a !important;    /*  使用更深的血紅色 */
+  border: 1px solid #ffccc7 !important;
+}
+
+/* 已售罄：深灰字 + 灰底 + 灰邊框 */
+.badge-soldout {
+  background-color: #f5f5f5 !important;
+  color: #595959 !important;
+  border: 1px solid #d9d9d9 !important;
+}
+
+
+
 /* 🔹 解決捲軸的最關鍵設定 */
 * { 
   box-sizing: border-box; 
