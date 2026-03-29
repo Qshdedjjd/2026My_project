@@ -121,18 +121,20 @@ html, body {
 /* 修改原本的 .product-form 區塊 */
 .product-form {
   display: grid;
-  grid-template-columns: 1fr 1fr; /* 強制分為兩欄 */
+  /* 🔹 原理：每個格子最少 280px，不夠寬就自動跳到下一行，不用寫 Media Query */
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); 
   gap: 15px;
   width: 100%;
   max-width: 900px;
-  background-color: var(--card-bg) !important;
-  border: 1px solid var(--border-color);
-  border-radius: 12px;
-  padding: 25px;
-  margin-bottom: 30px;
-  box-sizing: border-box;
+  box-sizing: border-box; /* 🔹 重要：確保 padding 不會增加額外寬度 */
 }
 
+/* 確保所有輸入框不會超過父層 */
+.product-form input, 
+.product-form select {
+  width: 100% !important;
+  max-width: 100%;
+}
 /* 讓圖片上傳與提交按鈕橫跨整排 */
 .file-input-wrapper, 
 .product-form button[type="submit"] {
