@@ -11,7 +11,7 @@
 .dark-theme {
   --bg-color: #0f172a;
   --sidebar-bg: #1e293b;
-  --text-main: #d6e1eb
+  --text-main: #d6e1eb;
   --text-muted: #94a3b8;
   --border-color: #334155;
   --card-bg: #1e293b;
@@ -156,7 +156,7 @@ td {
 
 /* --- 6. 按鈕顏色與標籤 (補回你原本的顏色) --- */
 .btn-edit {
-  background-color: var(--bg-color) !important;
+  background-color: var(--text-main) !important;
   color: white !important;
   padding: 8px 16px;
   border: none;
