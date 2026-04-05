@@ -1,6 +1,6 @@
 /* --- 1. 核心變數與全域設定 --- */
 :root {
-  --bg-color: #f8fafc;
+  --bg-color: #d6e1eb;
   --sidebar-bg: #0f172a;
   --text-main: #1e293b;
   --text-muted: #64748b;
@@ -59,7 +59,9 @@ html, body {
   flex-direction: column;
   border-right: 1px solid var(--border-color);
 }
-
+.sidebar-logo{
+  color:8693AB
+}
 .sidebar-item {
   background: transparent;
   border: none;
