@@ -1,11 +1,12 @@
 /* --- 1. 核心變數與全域設定 --- */
 :root {
-  --bg-color: #EAFFFD;
-  --sidebar-bg: #EFEFF0;
-  --text-main: #6B5E62;
+  --bg-color: #d6e1eb;
+  --sidebar-bg: #0f172a;
+  --text-main: #1e293b;
   --text-muted: #64748b;
-  --border-color: #EFEFF0;
-  --card-bg: #EFEFF0;
+  --border-color: #e2e8f0;
+  --card-bg: #ffffff;
+  --sidebar-logo:#0f172a;
 }
 
 .dark-theme {
@@ -15,6 +16,7 @@
   --text-muted: #94a3b8;
   --border-color: #334155;
   --card-bg: #1e293b;
+  --sidebar-logo:#d6e1eb;
 }
 
 /* 🔹 基礎重置：解決「填寫框超出去」的核心 */
@@ -59,8 +61,10 @@ html, body {
   flex-direction: column;
   border-right: 1px solid var(--border-color);
 }
-.sidebar-logo{
-  color:#6B5E62;
+.sidebar-logo {
+  color: var(--logo-color) !important; /* 👈 這樣它就會根據外層有沒有 .dark-theme 自動換色 */
+  font-weight: bold;
+  font-size: 20px;
 }
 .sidebar-item {
   background: transparent;
