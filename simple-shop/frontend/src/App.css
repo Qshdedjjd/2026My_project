@@ -6,17 +6,15 @@
   --text-muted: #64748b;
   --border-color: #e2e8f0;
   --card-bg: #ffffff;
-  --logo-color:#0f172a;
 }
 
 .dark-theme {
   --bg-color: #0f172a;
   --sidebar-bg: #1e293b;
-  --text-main: #f1f5f9;
+  --text-main: #d6e1eb
   --text-muted: #94a3b8;
   --border-color: #334155;
   --card-bg: #1e293b;
-  --logo-color:#d6e1eb;
 }
 
 /* 🔹 基礎重置：解決「填寫框超出去」的核心 */
@@ -51,6 +49,13 @@ html, body {
   max-width: 100%;
 }
 
+/* 針對主內容區的 h2 標題改顏色 */
+.main-content h2 {
+  color: var(--text-main) !important; /* 讓它跟隨你定義的深淺色變數 */
+  margin-bottom: 20px;               /* 順便拉開一點跟下方表單的距離 */
+  font-weight: 700;                  /* 讓標題粗一點更有質感 */
+}
+
 /* --- 3. 側邊欄 --- */
 .sidebar {
   width: 240px;
@@ -62,7 +67,7 @@ html, body {
   border-right: 1px solid var(--border-color);
 }
 .sidebar-logo {
-  color: var(--logo-color) !important; /* 👈 這樣它就會根據外層有沒有 .dark-theme 自動換色 */
+  color: #d6e1eb ; 
   font-weight: bold;
   font-size: 20px;
 }
@@ -83,7 +88,7 @@ html, body {
 
 .sidebar-item.active {
   background-color: rgba(99, 102, 241, 0.2);
-  color: #818cf8;
+  color: #d6e1eb;
 }
 
 /* --- 4. 商品表單 (修正溢出並保留顏色) --- */
@@ -151,7 +156,7 @@ td {
 
 /* --- 6. 按鈕顏色與標籤 (補回你原本的顏色) --- */
 .btn-edit {
-  background-color: #30506d !important;
+  background-color: var(--bg-color) !important;
   color: white !important;
   padding: 8px 16px;
   border: none;

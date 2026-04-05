@@ -181,9 +181,7 @@ function ProductManager() {
         <button className={`sidebar-item ${activeTab === 'products' ? 'active' : ''}`} onClick={() => setActiveTab('products')}> 商品管理</button>
         <button className={`sidebar-item ${activeTab === 'data' ? 'active' : ''}`} onClick={() => setActiveTab('data')}> 數據中心</button>
         <button className={`sidebar-item ${activeTab === 'shop' ? 'active' : ''}`} 
-          onClick={() => setActiveTab('shop')} 
-          style={{ color: '#fbbf24' }}>
-           買家視角 (前台)
+          onClick={() => setActiveTab('shop')} >買家視角 (前台)
         </button>
         <button className="theme-toggle-btn" onClick={() => setIsDark(!isDark)}>{isDark ? " 淺色" : " 深色"}</button>
       </div>
@@ -240,7 +238,7 @@ function ProductManager() {
               {selectedIds.length > 0 && (
                 <button className="btn-batch-delete" onClick={handleBatchDelete} style={{ background: '#ef4444', color: 'white' }}>🗑️ 刪除 ({selectedIds.length})</button>
               )}
-              <button onClick={exportToCSV} className="btn-edit" style={{ width: 'auto', padding: '0 15px', backgroundColor: '#10b981' }}>匯出 CSV</button>
+              <button onClick={exportToCSV} className="btn-edit"  >匯出 CSV</button>
             </div>
 
             <div className="table-responsive">
