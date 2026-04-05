@@ -157,7 +157,7 @@ td {
 /* --- 6. 按鈕顏色與標籤 (補回你原本的顏色) --- */
 .btn-edit {
   background-color: var(--text-main) !important;
-  color: white !important;
+  color: var(--bg-color) !important;
   padding: 8px 16px;
   border: none;
   border-radius: 6px;
