@@ -1,11 +1,11 @@
 /* --- 1. 核心變數與全域設定 --- */
 :root {
-  --bg-color: #d6e1eb;
-  --sidebar-bg: #0f172a;
-  --text-main: #1e293b;
+  --bg-color: #EAFFFD;
+  --sidebar-bg: #EFEFF0;
+  --text-main: #6B5E62;
   --text-muted: #64748b;
-  --border-color: #e2e8f0;
-  --card-bg: #ffffff;
+  --border-color: #EFEFF0;
+  --card-bg: #EFEFF0;
 }
 
 .dark-theme {
@@ -60,7 +60,7 @@ html, body {
   border-right: 1px solid var(--border-color);
 }
 .sidebar-logo{
-  color:8693AB
+  color:#6B5E62;
 }
 .sidebar-item {
   background: transparent;
