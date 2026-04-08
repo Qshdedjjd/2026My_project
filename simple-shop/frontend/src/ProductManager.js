@@ -31,6 +31,7 @@ const AlertFactory = ({ type, message }) => {
 
 function ProductManager() {
   const [isDark, setIsDark] = useState(true);
+  const [isMenuOpen, setIsMenuOpen] = useState(false); // 控制側邊欄開關
   const [products, setProducts] = useState([]);
   const [form, setForm] = useState({ name: "", description: "", price: "", stock: "", category: "未分類" });
   const [editingId, setEditingId] = useState(null);
@@ -176,7 +177,12 @@ function ProductManager() {
 
   return (
     <div className={isDark ? "dark-theme container" : "light-theme container"}>
-      <div className="sidebar">
+      {/* 1. 遮罩 (只有選單打開時才出現) */}
+    {isMenuOpen && <div className="sidebar-overlay" onClick={() => setIsMenuOpen(false)}></div>}
+
+    {/* 2. 修改原本的側邊欄 (加上 open 判斷) */}
+    <div className={`sidebar ${isMenuOpen ? "open" : ""}`}></div>
+      
         <h3 className="sidebar-logo">SELLER CENTER</h3>
         <button className={`sidebar-item ${activeTab === 'products' ? 'active' : ''}`} onClick={() => setActiveTab('products')}> 商品管理</button>
         <button className={`sidebar-item ${activeTab === 'data' ? 'active' : ''}`} onClick={() => setActiveTab('data')}> 數據中心</button>
@@ -184,11 +190,19 @@ function ProductManager() {
           onClick={() => setActiveTab('shop')} >買家視角 (前台)
         </button>
         <button className="theme-toggle-btn" onClick={() => setIsDark(!isDark)}>{isDark ? " 淺色" : " 深色"}</button>
+        <div className="sidebar-footer">
+          <button className="btn-logout" onClick={() => { localStorage.removeItem("token"); window.location.reload(); }}>登出系統</button>
+       
       </div>
 
       <div className="main-content">
         <div className="top-bar">
-          <button className="btn-logout" onClick={() => { localStorage.removeItem("token"); window.location.reload(); }}>登出</button>
+          {/* 3. 漢堡按鈕 (三條線) */}
+          <button className="hamburger-btn" onClick={() => setIsMenuOpen(!isMenuOpen)}>
+            <span className="bar"></span>
+            <span className="bar"></span>
+            <span className="bar"></span>
+          </button>
         </div>
 
         {activeTab === 'products' && (

@@ -226,62 +226,46 @@ td {
   }
 }
 
-/* --- 漢堡按鈕樣式 --- */
-.hamburger {
+/* 漢堡按鈕樣式 */
+.hamburger-btn {
   background: none;
   border: none;
   cursor: pointer;
   display: flex;
   flex-direction: column;
-  gap: 5px;
+  gap: 4px;
   padding: 10px;
-  z-index: 1001; /* 確保按鈕在最上面 */
 }
 
-.line {
+.hamburger-btn .bar {
   width: 25px;
   height: 3px;
   background-color: var(--text-main);
   transition: 0.3s;
 }
 
-/* --- 側邊欄滑動邏輯 --- */
-.sidebar {
-  position: fixed;   /* 👈 固定定位，不隨頁面捲動 */
-  top: 0;
-  left: -260px;      /* 👈 初始位置：完全藏在螢幕左邊外面 */
-  width: 260px;
-  height: 100vh;
-  background-color: var(--sidebar-bg);
-  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1); /* 👈 平滑滑動動畫 */
-  z-index: 1000;
-  display: flex;
-  flex-direction: column;
+/* 側邊欄隱藏邏輯 (手機版或縮小時) */
+@media (max-width: 768px) {
+  .sidebar {
+    position: fixed;
+    left: -260px; /* 藏起來 */
+    z-index: 1000;
+  }
+  .sidebar.open {
+    left: 0; /* 滑進來 */
+  }
+  .main-content {
+    margin-left: 0 !important; /* 滿版 */
+  }
 }
 
-/* 當 JS 把 .open 加進來時，位置歸零（滑出來） */
-.sidebar.open {
-  left: 0; 
-  box-shadow: 5px 0 15px rgba(0,0,0,0.3);
-}
-
-/* --- 登出按鈕固定在底部 --- */
-.nav-links {
-  flex: 1; /* 👈 撐開中間空間，把 footer 推到底部 */
-}
-
-.sidebar-footer {
-  padding: 20px;
-  border-top: 1px solid rgba(255,255,255,0.1);
-}
-
-/* --- 背景遮罩 --- */
-.overlay {
+/* 遮罩 */
+.sidebar-overlay {
   position: fixed;
   top: 0;
   left: 0;
-  width: 100vw;
-  height: 100vh;
-  background: rgba(0, 0, 0, 0.5); /* 半透明黑 */
+  right: 0;
+  bottom: 0;
+  background: rgba(0,0,0,0.5);
   z-index: 999;
 }
