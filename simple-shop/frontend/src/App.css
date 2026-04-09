@@ -203,105 +203,114 @@ td {
   border: 1px solid #d9d9d9 !important;
 }
 
-/* --- 7. 手機版 RWD --- */
+/* --- 7. RWD 手機版與側邊欄邏輯 --- */
+
+/* 預設隱藏漢堡按鈕 (桌機不需要) */
+.hamburger-btn {
+  display: none;
+}
+
 @media (max-width: 768px) {
-  .container { flex-direction: column; }
-  
-  .sidebar {
-    width: 100%;
-    min-width: 100%;
-    height: auto;
-    flex-direction: row;
-    padding: 10px;
-    overflow-x: auto;
-    border-right: none;
-    border-bottom: 1px solid var(--border-color);
-  }
-
-  .main-content { padding: 20px 15px; }
-
-  .product-form {
-    grid-template-columns: 1fr !important;
-    padding: 15px;
-  }
-}
-
-/* 側邊欄選單容器 */
-.sidebar-menu {
-  flex: 1; /* 讓選單佔據中間剩餘空間 */
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-  margin-top: 20px;
-}
-
-/* 側邊欄底部區域 */
-.sidebar-footer {
-  margin-top: auto; /* 讓底部工具固定在最下方 */
-  display: flex;
-  flex-direction: column;
-  gap: 15px;
-  padding-top: 20px;
-  border-top: 1px solid var(--border-color);
-}
-
-/* --- 手機版側邊欄懸浮效果 --- */
-@media (max-width: 768px) {
-  /* 1. 側邊欄變為懸浮抽屜 */
+  /* 1. 側邊欄改為固定抽屜 */
   .sidebar {
     position: fixed;
     top: 0;
-    left: -100%; /* 預設完全隱藏在左邊 */
+    left: -280px; /* 初始藏在左邊 */
     width: 260px;
     height: 100vh;
-    z-index: 1001; /* 確保在最上層 */
-    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-    box-shadow: 10px 0 30px rgba(0,0,0,0.5);
-    background-color: var(--sidebar-bg);
-    display: flex;
-    flex-direction: column;
+    z-index: 2000;
+    transition: left 0.3s ease-in-out;
+    box-shadow: 5px 0 15px rgba(0,0,0,0.3);
+    min-width: unset;
+    border-right: 1px solid var(--border-color);
   }
 
-  /* 2. 當 isMenuOpen 為 true 時，推入畫面 */
+  /* 2. 當狀態為 open 時推入 */
   .sidebar.open {
     left: 0;
   }
 
-  /* 3. 漢堡按鈕固定在角落 */
-  .top-bar {
-    position: fixed;
-    top: 15px;
-    left: 15px;
-    z-index: 1002;
-    background: transparent;
-  }
-
+  /* 3. 顯示漢堡按鈕 */
   .hamburger-btn {
     display: flex;
     flex-direction: column;
-    justify-content: space-around;
-    width: 35px;
-    height: 30px;
-    background: var(--card-bg); /* 給按鈕一個底色讓它明顯 */
-    padding: 8px;
-    border-radius: 8px;
+    gap: 5px;
+    background: var(--card-bg);
     border: 1px solid var(--border-color);
+    padding: 8px;
+    border-radius: 6px;
+    cursor: pointer;
+    position: fixed;
+    top: 15px;
+    left: 15px;
+    z-index: 1000;
   }
 
-  /* 4. 遮罩層 (點擊目錄以外的地方自動關閉) */
+  .bar {
+    width: 20px;
+    height: 2px;
+    background-color: var(--text-main);
+  }
+
+  /* 4. 遮罩層 */
   .sidebar-overlay {
     position: fixed;
     top: 0;
     left: 0;
-    width: 100vw;
-    height: 100vh;
-    background: rgba(0, 0, 0, 0.6);
-    backdrop-filter: blur(3px);
-    z-index: 1000;
+    width: 100%;
+    height: 100%;
+    background: rgba(0,0,0,0.5);
+    z-index: 1500;
+    backdrop-filter: blur(2px);
   }
 
-  /* 5. 調整主內容，不要被固定按鈕擋住標題 */
+  /* 5. 調整主內容間距，防止被漢堡按鈕遮擋 */
   .main-content {
-    padding-top: 80px !important;
+    margin-left: 0 !important;
+    padding: 80px 15px 20px 15px;
+    width: 100%;
   }
+
+  /* 6. 表單在手機上改為單欄 */
+  .product-form {
+    grid-template-columns: 1fr !important;
+  }
+}
+
+/* --- 8. 補充結構修正 --- */
+.sidebar-menu {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-top: 30px;
+}
+
+.sidebar-footer {
+  margin-top: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 20px 0;
+  border-top: 1px solid rgba(255,255,255,0.1);
+}
+
+.theme-toggle-btn {
+  background: rgba(99, 102, 241, 0.1);
+  border: 1px solid rgba(99, 102, 241, 0.3);
+  color: #fff;
+  padding: 10px;
+  border-radius: 6px;
+  cursor: pointer;
+  margin-bottom: 10px;
+}
+
+.btn-logout {
+  background: #ef4444;
+  color: white;
+  border: none;
+  padding: 10px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: bold;
 }
