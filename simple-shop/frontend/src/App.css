@@ -245,3 +245,63 @@ td {
   border-top: 1px solid var(--border-color);
 }
 
+/* --- 手機版側邊欄懸浮效果 --- */
+@media (max-width: 768px) {
+  /* 1. 側邊欄變為懸浮抽屜 */
+  .sidebar {
+    position: fixed;
+    top: 0;
+    left: -100%; /* 預設完全隱藏在左邊 */
+    width: 260px;
+    height: 100vh;
+    z-index: 1001; /* 確保在最上層 */
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    box-shadow: 10px 0 30px rgba(0,0,0,0.5);
+    background-color: var(--sidebar-bg);
+    display: flex;
+    flex-direction: column;
+  }
+
+  /* 2. 當 isMenuOpen 為 true 時，推入畫面 */
+  .sidebar.open {
+    left: 0;
+  }
+
+  /* 3. 漢堡按鈕固定在角落 */
+  .top-bar {
+    position: fixed;
+    top: 15px;
+    left: 15px;
+    z-index: 1002;
+    background: transparent;
+  }
+
+  .hamburger-btn {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    width: 35px;
+    height: 30px;
+    background: var(--card-bg); /* 給按鈕一個底色讓它明顯 */
+    padding: 8px;
+    border-radius: 8px;
+    border: 1px solid var(--border-color);
+  }
+
+  /* 4. 遮罩層 (點擊目錄以外的地方自動關閉) */
+  .sidebar-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: rgba(0, 0, 0, 0.6);
+    backdrop-filter: blur(3px);
+    z-index: 1000;
+  }
+
+  /* 5. 調整主內容，不要被固定按鈕擋住標題 */
+  .main-content {
+    padding-top: 80px !important;
+  }
+}
