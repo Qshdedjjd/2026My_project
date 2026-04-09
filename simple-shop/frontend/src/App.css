@@ -97,12 +97,13 @@ html, body {
   grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); 
   gap: 20px;
   width: 100%;
-  max-width: 900px;
+  max-width: 700px;
   background-color: var(--card-bg);
   border: 1px solid var(--border-color);
   border-radius: 12px;
   padding: 25px;
   margin-bottom: 30px;
+  margin: 0 auto 30px auto; /* 確保水平置中 */
 }
 
 .product-form input, 
@@ -278,15 +279,15 @@ td {
 }
 
 /* --- 8. 補充結構修正 --- */
-.sidebar-menu {
+.sidebar-menu {/*側邊欄中間*/
   flex: 1;
   display: flex;
   flex-direction: column;
   gap: 8px;
-  margin-top: 30px;
+  margin-top: auto;
 }
 
-.sidebar-footer {
+.sidebar-footer {/*側邊欄底部*/
   margin-top: auto;
   display: flex;
   flex-direction: column;
@@ -306,11 +307,16 @@ td {
 }
 
 .btn-logout {
-  background: #ef4444;
-  color: white;
+  background: #aba6a6;
+  color: rgb(181, 226, 243);
   border: none;
   padding: 10px;
   border-radius: 6px;
   cursor: pointer;
   font-weight: bold;
+  width: 90%; /* 不要完全撐滿，留一點呼吸空間 */
+  transition: opacity 0.2s;
+}
+.btn-logout:hover {
+  opacity: 0.9;        /* 滑鼠移上去稍微變透明，增加互動感 */
 }
