@@ -37,6 +37,7 @@ html, body {
   display: flex;
   min-height: 100vh;
   width: 100%;
+  background-color: var(--bg-color);
 }
 
 .main-content {
@@ -46,7 +47,8 @@ html, body {
   flex-direction: column;
   align-items: center;
   background-color: var(--bg-color);
-  max-width: 100%;
+  width: 100%;            /* 👈 基礎寬度設為 100% */
+  box-sizing: border-box; /* 確保 padding 不會把寬度撐破 */
 }
 
 /* 針對主內容區的 h2 標題改顏色 */
@@ -284,7 +286,7 @@ td {
   display: flex;
   flex-direction: column;
   gap: 8px;
-  margin-top: auto;
+  margin-top: 40px;
 }
 
 .sidebar-footer {/*側邊欄底部*/
@@ -307,8 +309,8 @@ td {
 }
 
 .btn-logout {
-  background: #aba6a6;
-  color: rgb(181, 226, 243);
+  background: #121212;
+  color: rgb(210, 235, 244);
   border: none;
   padding: 10px;
   border-radius: 6px;
