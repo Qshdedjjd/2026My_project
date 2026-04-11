@@ -39,7 +39,7 @@ html, body {
   width: 100%;
   margin: 0 !important;     /* 🔹 強制歸零，消除紫色區域 */
   padding: 0 !important;    /* 🔹 消除內距 */
-  background-color: var(--bg-color);
+  background-color: var(--bg-color)!important;
 }
 
 .main-content {
