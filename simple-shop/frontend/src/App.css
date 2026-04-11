@@ -300,9 +300,16 @@ td {
   }
   /* 表格一定要能滑動，否則會撐破螢幕 */
   .table-responsive {
-    width: 100%;
-    overflow-x: auto;
-    -webkit-overflow-scrolling: touch; /* 讓手機滑動更順暢 */
+    display: block !important;
+    width: 100% !important;
+    overflow-x: auto !important; /* 👈 這是區域捲軸的關鍵 */
+    -webkit-overflow-scrolling: touch; /* 手機滑動優化 */
+    border: 1px solid var(--border-color);
+  }
+
+  /* 🔹 重要：給表格一個最小寬度，才會觸發捲軸 */
+  .table-responsive table {
+    min-width: 700px !important; 
   }
 }
 
