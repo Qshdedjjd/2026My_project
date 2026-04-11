@@ -55,7 +55,7 @@ html, body {
   .main-content {
     margin-left: 240px;          /* 等於 sidebar 的寬度 */
     width: calc(100% - 240px);   /* 強制主內容撐滿剩餘空間 */
-    align-items: flex-start;     /* 👈 關鍵：不要置中對齊，讓內容水平撐開 */
+    align-items: center;     
   }
 }
 
@@ -214,11 +214,23 @@ td {
   border: 1px solid #d9d9d9 !important;
 }
 
-/* --- 7. RWD 手機版與側邊欄邏輯 --- */
+/* --- 7. RWD 手機版與側邊欄邏輯 (優化版) --- */
 
 /* 預設隱藏漢堡按鈕 (桌機不需要) */
 .hamburger-btn {
   display: none;
+}
+
+/* 這裡是關鍵：確保桌機版標題置中且寬度正確 */
+@media (min-width: 769px) {
+  .main-content {
+    margin-left: 240px; /* 留出側邊欄空間 */
+    width: calc(100% - 240px); 
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center; /* 讓標題與表單垂直置中 */
+  }
 }
 
 @media (max-width: 768px) {
@@ -226,65 +238,67 @@ td {
   .sidebar {
     position: fixed;
     top: 0;
-    left: -280px; /* 初始藏在左邊 */
+    left: -280px; 
     width: 260px;
     height: 100vh;
     z-index: 2000;
     transition: left 0.3s ease-in-out;
     box-shadow: 5px 0 15px rgba(0,0,0,0.3);
     min-width: unset;
-    border-right: 1px solid var(--border-color);
   }
 
-  /* 2. 當狀態為 open 時推入 */
   .sidebar.open {
     left: 0;
   }
 
-  /* 3. 顯示漢堡按鈕 */
+  /* 2. 漢堡按鈕樣式修正 */
   .hamburger-btn {
     display: flex;
     flex-direction: column;
-    gap: 5px;
-    background: var(--card-bg);
-    border: 1px solid var(--border-color);
-    padding: 8px;
-    border-radius: 6px;
+    justify-content: center;
+    align-items: center;
+    gap: 4px;
+    background: var(--sidebar-bg); /* 改用深色較明顯 */
+    border: none;
+    width: 45px;
+    height: 45px;
+    border-radius: 8px;
     cursor: pointer;
     position: fixed;
     top: 15px;
     left: 15px;
-    z-index: 1000;
+    z-index: 1001;
   }
 
   .bar {
-    width: 20px;
-    height: 2px;
-    background-color: var(--text-main);
+    width: 24px;
+    height: 3px;
+    background-color: #ffffff;
+    border-radius: 2px;
   }
 
-  /* 4. 遮罩層 */
-  .sidebar-overlay {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: rgba(0,0,0,0.5);
-    z-index: 1500;
-    backdrop-filter: blur(2px);
-  }
-
-  /* 5. 調整主內容間距，防止被漢堡按鈕遮擋 */
+  /* 3. 主內容區 RWD 修正 */
   .main-content {
-    margin-left: 0 !important;
-    padding: 80px 15px 20px 15px;
+    margin-left: 0 !important; /* 手機版不需要左邊距 */
+    width: 100% !important;
+    padding: 80px 15px 20px 15px; /* 上方留空間給漢堡按鈕 */
+    align-items: center;
+  }
+
+  /* 4. 表單與表格 RWD */
+  .product-form {
+    grid-template-columns: 1fr !important; /* 強制單欄 */
     width: 100%;
   }
 
-  /* 6. 表單在手機上改為單欄 */
-  .product-form {
-    grid-template-columns: 1fr !important;
+  .action-bar {
+    flex-direction: column;
+    gap: 10px;
+    width: 100%;
+  }
+  
+  .search-input, .category-filter {
+    width: 100% !important;
   }
 }
 
