@@ -50,6 +50,14 @@ html, body {
   width: 100%;            /* 👈 基礎寬度設為 100% */
   box-sizing: border-box; /* 確保 padding 不會把寬度撐破 */
 }
+/* --- 桌機版 (min-width: 769px) 微調 --- */
+@media (min-width: 769px) {
+  .main-content {
+    margin-left: 240px;          /* 等於 sidebar 的寬度 */
+    width: calc(100% - 240px);   /* 強制主內容撐滿剩餘空間 */
+    align-items: flex-start;     /* 👈 關鍵：不要置中對齊，讓內容水平撐開 */
+  }
+}
 
 /* 針對主內容區的 h2 標題改顏色 */
 .main-content h2 {
