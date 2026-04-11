@@ -48,7 +48,7 @@ html, body {
   display: flex;
   flex-direction: column;
   align-items: center;
-  background-color: var(--bg-color);
+  background-color: var(--bg-color)!important;
   width: 100%;            /* 👈 基礎寬度設為 100% */
   box-sizing: border-box; /* 確保 padding 不會把寬度撐破 */
 }
