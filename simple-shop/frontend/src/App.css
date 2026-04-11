@@ -61,6 +61,11 @@ html, body {
     align-items: center;     
     background-color: var(--bg-color);
   }
+  .sidebar {
+    position: sticky; /* 或者維持預設，不遮擋內容 */
+    top: 0;
+    height: 100vh;
+  }
 }
 
 /* 針對主內容區的 h2 標題改顏色 */
@@ -283,12 +288,20 @@ td {
   .main-content {
     margin-left: 0 !important;
     padding: 80px 15px 20px 15px;
-    width: 100%;
+    width: 100%!important;
   }
 
   /* 6. 表單在手機上改為單欄 */
   .product-form {
     grid-template-columns: 1fr !important;
+    width: 95% !important; /* 留一點點邊界，更有質感 */
+    padding: 15px !important;
+  }
+  /* 表格一定要能滑動，否則會撐破螢幕 */
+  .table-responsive {
+    width: 100%;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch; /* 讓手機滑動更順暢 */
   }
 }
 
