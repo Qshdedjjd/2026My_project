@@ -16,8 +16,6 @@
 - **深色/淺色模式**: 支援響應式 UI 主題切換。
 - **報表匯出**: 支援將商品資料一鍵匯出為 CSV 檔案。
 - **全端進階功能**：JWT 驗證、圖片上傳、批次刪除、CSV 導出。
-
-##  加分項目實作說明
 - **身份驗證**：實作 JWT (JSON Web Token) 權限控管，保護後端 API。
 - **設計模式 (Factory Pattern)**：前端 `AlertFactory` 根據狀態動態生成通知元件。
 - **設計模式 (MVC)**：後端嚴格區分 Routes, Controllers, Models 結構。
